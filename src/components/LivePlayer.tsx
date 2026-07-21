@@ -14,7 +14,6 @@ export default function LivePlayer() {
   return (
     <section id="live" className="relative w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-        {/* Section header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
@@ -36,10 +35,8 @@ export default function LivePlayer() {
           </div>
         </div>
 
-        {/* Video container */}
         <div className="relative steel-border rounded-xl overflow-hidden bg-black shadow-2xl">
           <div className="aspect-video relative bg-gradient-to-br from-charcoal to-black">
-            {/* Placeholder until real stream is connected */}
             {!isPlaying ? (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-[url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=80')] bg-cover bg-center">
                 <div className="absolute inset-0 bg-black/60" />
@@ -54,7 +51,7 @@ export default function LivePlayer() {
                     Watch Live Construction
                   </span>
                 </button>
-                <p className="absolute bottom-6 left-0 right-0 text-center text-sm text-warm-white/70 z-10">
+                <p className="absolute bottom-6 left-0 right right-0 text-center text-sm text-warm-white/70 z-10">
                   Stream will connect once the GoPro / camera feed is live
                 </p>
               </div>
@@ -68,7 +65,6 @@ export default function LivePlayer() {
               />
             )}
 
-            {/* Controls overlay (shown when playing) */}
             {isPlaying && (
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-between opacity-0 hover:opacity-100 transition-opacity">
                 <div className="flex items-center gap-3">
@@ -90,7 +86,6 @@ export default function LivePlayer() {
           </div>
         </div>
 
-        {/* Quick stats bar */}
         <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { label: "Project", value: "Chicago Fire Stadium" },
@@ -102,10 +97,10 @@ export default function LivePlayer() {
               key={stat.label}
               className="bg-charcoal/80 border border-fire-red/15 rounded-lg px-4 py-3"
             >
-              <p className="text-xs uppercase tracking-wider text-muted mb-1">
+              <p class className="text-xs uppercase tracking-wider text-muted mb-1">
                 {stat.label}
               </p>
-              < recp className="font-semibold text-warm-white text-sm sm:text-base">
+              <p className="font-semibold text-warm-white text-sm sm:text-base">
                 {stat.value}
               </p>
             </div>
