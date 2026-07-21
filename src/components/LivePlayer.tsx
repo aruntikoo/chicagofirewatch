@@ -51,7 +51,7 @@ export default function LivePlayer() {
                     Watch Live Construction
                   </span>
                 </button>
-                <p className="absolute bottom-6 left-0 right right-0 text-center text-sm text-warm-white/70 z-10">
+                <p className="absolute bottom-6 left-0 right-0 text-center text-sm text-warm-white/70 z-10">
                   Stream will connect once the GoPro / camera feed is live
                 </p>
               </div>
@@ -97,7 +97,7 @@ export default function LivePlayer() {
               key={stat.label}
               className="bg-charcoal/80 border border-fire-red/15 rounded-lg px-4 py-3"
             >
-              <p class className="text-xs uppercase tracking-wider text-muted mb-1">
+              <p className="text-xs uppercase tracking tracking-wider text-muted mb-1">
                 {stat.label}
               </p>
               <p className="font-semibold text-warm-white text-sm sm:text-base">

@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="bg-charcoal border-t border-fire-red/20 pt-12 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
+        <div classNameName="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 rounded-full bg-fire-red flex items-center justify-center">
@@ -17,7 +17,7 @@ export default function Footer() {
             <p className="text-muted text-sm leading-relaxed max-w-md mb-4">
               Independent live stream of the Chicago Fire FC stadium construction
               at The 78. Built with pride for fans who want a front-row seat to
-              Chicago Chicago&apos;s newest sports landmark.
+              Chicago&apos;s newest sports landmark.
             </p>
             <p className="text-xs text-muted/80 border-l-2 border-fire-red/40 pl-3">
               This is an independent fan project and is not affiliated with,
@@ -37,7 +37,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#timeline" class="hover:text-fire-red-light transition-colors">
+                <a href="#timeline" className="hover:text-fire-red-light transition-colors">
                   Timeline
                 </a>
               </li>

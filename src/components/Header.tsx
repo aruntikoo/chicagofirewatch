@@ -67,7 +67,7 @@ export default function Header() {
 
       {mobileOpen && (
         <div className="md:hidden bg-charcoal border-t border-fire-red/20">
-n          <nav className="px-4 py-3 space-y-1">
+          <nav className="px-4 py-3 space-y-1">
             {navItems.map((item) => (
               <a
                 key={item.name}
