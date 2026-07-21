@@ -9,7 +9,7 @@ const navItems = [
   { name: "Timeline", href: "#timeline" },
   { name: "Gallery", href: "#gallery" },
   { name: "Community", href: "#community" },
-  { name: " "Shop", href: "#shop" },
+  { name: "Shop", href: "#shop" },
   { name: "About", href: "#about" },
 ];
 
@@ -67,7 +67,7 @@ export default function Header() {
 
       {mobileOpen && (
         <div className="md:hidden bg-charcoal border-t border-fire-red/20">
-          <nav className="px-4 py-3 space-y-1">
+n          <nav className="px-4 py-3 space-y-1">
             {navItems.map((item) => (
               <a
                 key={item.name}
