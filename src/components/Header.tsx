@@ -9,18 +9,17 @@ const navItems = [
   { name: "Timeline", href: "#timeline" },
   { name: "Gallery", href: "#gallery" },
   { name: "Community", href: "#community" },
-  { name: "Shop", href: "#shop" },
+  { name: " "Shop", href: "#shop" },
   { name: "About", href: "#about" },
 ];
 
 export default function Header() {
-  const [mobileOpen, setMobileOpen] = use(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-charcoal/95 backdrop-blur-md border-b border-fire-red/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-9 h-9 rounded-full bg-fire-red flex items-center justify-center group-hover:bg-fire-red-light transition-colors">
               <Flame className="w-5 h-5 text-white" />
@@ -35,7 +34,6 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (
               <a
@@ -48,7 +46,6 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Live indicator + mobile toggle */}
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-fire-red/20 border border-fire-red/40">
               <span className="w-2 h-2 rounded-full bg-fire-red live-badge" />
@@ -68,7 +65,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {mobileOpen && (
         <div className="md:hidden bg-charcoal border-t border-fire-red/20">
           <nav className="px-4 py-3 space-y-1">
