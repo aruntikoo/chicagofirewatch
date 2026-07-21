@@ -59,7 +59,6 @@ export default function LivePlayer() {
                 </p>
               </div>
             ) : (
-              // Real embed once you have a stream ID
               <iframe
                 className="absolute inset-0 w-full h-full"
                 src={`https://www.youtube.com/embed/${youtubeEmbedId}?autoplay=1&mute=1`}
@@ -67,7 +66,7 @@ export default function LivePlayer() {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
-           n            )}
+            )}
 
             {/* Controls overlay (shown when playing) */}
             {isPlaying && (
@@ -106,7 +105,7 @@ export default function LivePlayer() {
               <p className="text-xs uppercase tracking-wider text-muted mb-1">
                 {stat.label}
               </p>
-              <p className="font-semibold text-warm-white text-sm sm:text-base">
+              < recp className="font-semibold text-warm-white text-sm sm:text-base">
                 {stat.value}
               </p>
             </div>
