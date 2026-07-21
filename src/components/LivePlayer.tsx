@@ -8,8 +8,7 @@ export default function LivePlayer() {
   const [muted, setMuted] = useState(true);
 
   // Placeholder for actual stream URL (YouTube Live or HLS)
-  // Replace with your real embed once streaming is live
-  const youtubeEmbedId = "YOUR_YOUTUBE_LIVE_ID"; // e.g. from YouTube Live
+  const youtubeEmbedId = "YOUR_YOUTUBE_LIVE_ID";
 
   return (
     <section id="live" className="relative w-full">
@@ -97,7 +96,7 @@ export default function LivePlayer() {
               key={stat.label}
               className="bg-charcoal/80 border border-fire-red/15 rounded-lg px-4 py-3"
             >
-              <p className="text-xs uppercase tracking tracking-wider text-muted mb-1">
+              <p className="text-xs uppercase tracking-wider text-muted mb-1">
                 {stat.label}
               </p>
               <p className="font-semibold text-warm-white text-sm sm:text-base">
