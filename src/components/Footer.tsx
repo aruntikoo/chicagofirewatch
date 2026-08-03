@@ -76,7 +76,7 @@ export default function Footer() {
             </h4>
             <div className="flex gap-3 mb-4">
               <a
-                href="https://x.com"
+                href="https://x.com/chicagofirewatch"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Follow on X"
