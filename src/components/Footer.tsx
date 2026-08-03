@@ -85,7 +85,7 @@ export default function Footer() {
                 <XIcon size={16} />
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/chicagofirewatch/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Follow on Instagram"
