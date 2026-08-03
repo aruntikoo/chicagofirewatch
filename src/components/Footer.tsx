@@ -1,4 +1,20 @@
-import { Flame, Twitter, Instagram, Youtube } from "lucide-react";
+import { Flame, Instagram, Youtube } from "lucide-react";
+
+// Official-style X (formerly Twitter) logo as inline SVG
+function XIcon({ size = 16, className = "" }: { size?: number; className?: string }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
 
 export default function Footer() {
   return (
@@ -17,7 +33,7 @@ export default function Footer() {
             <p className="text-muted text-sm leading-relaxed max-w-md mb-4">
               Independent live stream of the Chicago Fire FC stadium construction
               at The 78. Built with pride for fans who want a front-row seat to
-              Chicago&apos;s newest sports landmark.
+              Chicago's newest sports landmark.
             </p>
             <p className="text-xs text-muted/80 border-l-2 border-fire-red/40 pl-3">
               This is an independent fan project and is not affiliated with,
@@ -63,14 +79,16 @@ export default function Footer() {
                 href="https://x.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Follow on X"
                 className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-muted hover:text-fire-red-light hover:border-fire-red/40 transition-colors"
               >
-                <Twitter size={16} />
+                <XIcon size={16} />
               </a>
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Follow on Instagram"
                 className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-muted hover:text-fire-red-light hover:border-fire-red/40 transition-colors"
               >
                 <Instagram size={16} />
@@ -79,6 +97,7 @@ export default function Footer() {
                 href="https://youtube.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Subscribe on YouTube"
                 className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-muted hover:text-fire-red-light hover:border-fire-red/40 transition-colors"
               >
                 <Youtube size={16} />
