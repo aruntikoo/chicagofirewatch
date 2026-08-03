@@ -94,7 +94,7 @@ export default function Footer() {
                 <Instagram size={16} />
               </a>
               <a
-                href="https://youtube.com"
+                href="https://www.youtube.com/@ChicagoFireWatch"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Subscribe on YouTube"
