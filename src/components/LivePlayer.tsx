@@ -7,8 +7,10 @@ export default function LivePlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
 
-  // Placeholder for actual stream URL (YouTube Live or HLS)
-  const youtubeEmbedId = "YOUR_YOUTUBE_LIVE_ID";
+  // Permanent channel live embed – always shows whatever is currently live on the channel
+  // Channel ID: UCCpOx6W4-N2BhFRHdc1043w
+  const youtubeEmbedSrc =
+    "https://www.youtube.com/embed/live_stream?channel=UCCpOx6W4-N2BhFRHdc1043w&autoplay=1&mute=1";
 
   return (
     <section id="live" className="relative w-full">
@@ -51,13 +53,13 @@ export default function LivePlayer() {
                   </span>
                 </button>
                 <p className="absolute bottom-6 left-0 right-0 text-center text-sm text-warm-white/70 z-10">
-                  Stream will connect once the GoPro / camera feed is live
+                  Click to load the live stream from the construction site
                 </p>
               </div>
             ) : (
               <iframe
                 className="absolute inset-0 w-full h-full"
-                src={`https://www.youtube.com/embed/${youtubeEmbedId}?autoplay=1&mute=1`}
+                src={youtubeEmbedSrc}
                 title="Chicago Fire Stadium Live Construction"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
