@@ -89,7 +89,7 @@ export default function SponsorPage() {
         <section className="py-12 md:py-16 bg-charcoal/50 border-y border-fire-red/10">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-warm-white mb-6 text-center">
-              What&apos;s included
+              What's included
             </h2>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-muted">
               <li className="rounded-lg border border-white/5 bg-background/40 px-4 py-3">
@@ -158,7 +158,7 @@ export default function SponsorPage() {
               Request a spot
             </h2>
             <p className="text-muted text-sm text-center mb-8">
-              Tell us about your brand. We&apos;ll follow up with availability and payment details — no instant checkout.
+              Tell us about your brand. We'll follow up with availability and payment details.
             </p>
             <SponsorInterestForm />
           </div>
