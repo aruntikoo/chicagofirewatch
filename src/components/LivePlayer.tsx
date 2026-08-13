@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Play, Maximize, Volume2, VolumeX } from "lucide-react";
+import { Play, Maximize, Volume2, VolumeX, Heart } from "lucide-react";
 
 export default function LivePlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -11,6 +11,8 @@ export default function LivePlayer() {
   // Channel ID: UCCpOx6W4-N2BhFRHdc1043w
   const youtubeEmbedSrc =
     "https://www.youtube.com/embed/live_stream?channel=UCCpOx6W4-N2BhFRHdc1043w&autoplay=1&mute=1";
+
+  const supportUrl = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
 
   return (
     <section id="live" className="relative w-full">
@@ -85,6 +87,22 @@ export default function LivePlayer() {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Support the Cam — primary CTA under the player */}
+        <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+          <a
+            href={supportUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-fire-red hover:bg-fire-red-light text-white font-semibold text-sm sm:text-base shadow-lg shadow-fire-red/30 transition-colors"
+          >
+            <Heart className="w-4 h-4 fill-current" />
+            Support the Cam
+          </a>
+          <p className="text-sm text-muted text-center sm:text-left">
+            Help keep the live view running for Fire fans.
+          </p>
         </div>
 
         <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">

@@ -1,4 +1,6 @@
 export default function CommunityShop() {
+  const supportUrl = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
+
   return (
     <>
       <section id="community" className="py-16 md:py-20 bg-background">
@@ -47,39 +49,46 @@ export default function CommunityShop() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Merch",
-                desc: '"I Watched It Rise" tees, hoodies, and hard-hat stickers.',
-                cta: "Shop Soon",
-              },
-              {
-                title: "Donate",
-                desc: "Support hosting, camera gear, and stream uptime.",
-                cta: "Coming Soon",
-              },
-              {
-                title: "Sponsor",
-                desc: "Local brands and construction partners welcome.",
-                cta: "Get in Touch",
-              },
-            ].map((card) => (
-              <div
-                key={card.title}
-                className="steel-border rounded-xl bg-charcoal/90 p-6 text-center hover:border-fire-red/40 transition-colors"
+            <div className="steel-border rounded-xl bg-charcoal/90 p-6 text-center hover:border-fire-red/40 transition-colors">
+              <h3 className="text-lg font-bold text-warm-white mb-2">Merch</h3>
+              <p className="text-sm text-muted mb-5">
+                &quot;I Watched It Rise&quot; tees, hoodies, and hard-hat stickers.
+              </p>
+              <button
+                disabled
+                className="px-4 py-2 rounded-lg border border-fire-red/40 text-fire-red-light text-sm font-medium opacity-70 cursor-not-allowed"
               >
-                <h3 className="text-lg font-bold text-warm-white mb-2">
-                  {card.title}
-                </h3>
-                <p className="text-sm text-muted mb-5">{card.desc}</p>
-                <button
-                  disabled
-                  className="px-4 py-2 rounded-lg border border-fire-red/40 text-fire-red-light text-sm font-medium opacity-70 cursor-not-allowed"
-                >
-                  {card.cta}
-                </button>
-              </div>
-            ))}
+                Shop Soon
+              </button>
+            </div>
+
+            <div className="steel-border rounded-xl bg-charcoal/90 p-6 text-center hover:border-fire-red/40 transition-colors">
+              <h3 className="text-lg font-bold text-warm-white mb-2">Donate</h3>
+              <p className="text-sm text-muted mb-5">
+                Support hosting, camera gear, and stream uptime.
+              </p>
+              <a
+                href={supportUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-4 py-2 rounded-lg bg-fire-red hover:bg-fire-red-light text-white text-sm font-medium transition-colors"
+              >
+                Support the Cam
+              </a>
+            </div>
+
+            <div className="steel-border rounded-xl bg-charcoal/90 p-6 text-center hover:border-fire-red/40 transition-colors">
+              <h3 className="text-lg font-bold text-warm-white mb-2">Sponsor</h3>
+              <p className="text-sm text-muted mb-5">
+                Local brands and construction partners welcome.
+              </p>
+              <button
+                disabled
+                className="px-4 py-2 rounded-lg border border-fire-red/40 text-fire-red-light text-sm font-medium opacity-70 cursor-not-allowed"
+              >
+                Get in Touch
+              </button>
+            </div>
           </div>
         </div>
       </section>
