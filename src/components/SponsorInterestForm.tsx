@@ -2,39 +2,62 @@
 
 import { useState, FormEvent } from "react";
 
-const CONTACT_EMAIL = "arun.tikoo@gmail.com";
-
 export default function SponsorInterestForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [business, setBusiness] = useState("");
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState("");
   const [tier, setTier] = useState("Founding");
   const [message, setMessage] = useState("");
+  const [honeypot, setHoneypot] = useState("");
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    setError("");
     if (!name.trim() || !email.trim()) return;
 
-    const subject = encodeURIComponent(
-      `CFW Sponsorship Interest — ${business.trim() || name.trim()}`
-    );
-    const body = encodeURIComponent(
-      [
-        `Name: ${name.trim()}`,
-        `Business: ${business.trim() || "—"}`,
-        `Email: ${email.trim()}`,
-        `Website: ${website.trim() || "—"}`,
-        `Tier interest: ${tier}`,
-        "",
-        "Message:",
-        message.trim() || "—",
-      ].join("\n")
-    );
+    setLoading(true);
+    try {
+      const res = await fetch("/api/sponsor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          business: business.trim(),
+          email: email.trim(),
+          website: website.trim(),
+          tier,
+          message: message.trim(),
+          company_url: honeypot,
+        }),
+      });
 
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        setError(
+          typeof data.error === "string"
+            ? data.error
+            : "Something went wrong. Please try again."
+        );
+        return;
+      }
+
+      setSubmitted(true);
+      setName("");
+      setBusiness("");
+      setEmail("");
+      setWebsite("");
+      setTier("Founding");
+      setMessage("");
+    } catch {
+      setError("Network error. Please check your connection and try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (submitted) {
@@ -42,8 +65,8 @@ export default function SponsorInterestForm() {
       <div className="rounded-xl border border-fire-red/30 bg-charcoal/80 p-8 text-center">
         <h3 className="text-xl font-bold text-warm-white mb-2">Thanks for your interest</h3>
         <p className="text-muted text-sm max-w-md mx-auto">
-          Your email client should open with a pre-filled message. Send it and we&apos;ll
-          follow up with availability, dates, and payment details.
+          We received your request and will follow up with availability, dates, and
+          payment details.
         </p>
         <button
           type="button"
@@ -57,7 +80,23 @@ export default function SponsorInterestForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-xl border border-fire-red/20 bg-charcoal/80 p-6 sm:p-8 space-y-5">
+    <form
+      onSubmit={handleSubmit}
+      className="rounded-xl border border-fire-red/20 bg-charcoal/80 p-6 sm:p-8 space-y-5"
+    >
+      {/* Honeypot — hidden from users */}
+      <div className="absolute -left-[9999px] opacity-0 h-0 overflow-hidden" aria-hidden="true">
+        <label htmlFor="company_url">Company URL</label>
+        <input
+          id="company_url"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+        />
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
           <label htmlFor="name" className="block text-xs uppercase tracking-wider text-muted mb-1.5">
@@ -149,11 +188,18 @@ export default function SponsorInterestForm() {
         />
       </div>
 
+      {error && (
+        <p className="text-sm text-fire-red-light" role="alert">
+          {error}
+        </p>
+      )}
+
       <button
         type="submit"
-        className="w-full sm:w-auto px-6 py-3 rounded-lg bg-fire-red hover:bg-fire-red-light text-white font-semibold text-sm transition-colors"
+        disabled={loading}
+        className="w-full sm:w-auto px-6 py-3 rounded-lg bg-fire-red hover:bg-fire-red-light disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold text-sm transition-colors"
       >
-        Request a sponsorship spot
+        {loading ? "Sending…" : "Request a sponsorship spot"}
       </button>
       <p className="text-xs text-muted">
         We&apos;ll reply with availability and a Stripe payment link. Limited spots to keep the page clean.

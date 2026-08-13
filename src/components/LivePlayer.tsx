@@ -106,20 +106,20 @@ export default function LivePlayer() {
           </p>
         </div>
 
-        {/* Sponsor placeholder — secondary to donate CTA */}
+        {/* Sponsor placeholder — leaderboard-style full width under player */}
         <div className="mt-6">
           <p className="text-[10px] uppercase tracking-widest text-muted/70 text-center mb-2">
-            Sponsor
+            Advertisement
           </p>
           <Link
             href="/sponsor"
-            className="group block w-full max-w-3xl mx-auto rounded-lg border border-dashed border-fire-red/30 bg-charcoal/60 hover:border-fire-red/50 hover:bg-charcoal/80 transition-colors"
+            className="group block w-full rounded-lg border border-dashed border-fire-red/35 bg-charcoal/70 hover:border-fire-red/55 hover:bg-charcoal/90 transition-colors"
           >
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 px-4 py-5 sm:py-6 min-h-[72px]">
-              <span className="text-warm-white/90 font-medium text-sm sm:text-base text-center">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 px-6 py-7 sm:py-8 min-h-[96px] sm:min-h-[100px]">
+              <span className="text-warm-white font-medium text-base sm:text-lg text-center">
                 Sponsor this live cam — Reach Chicago Fire fans
               </span>
-              <span className="text-fire-red-light text-sm font-semibold group-hover:underline whitespace-nowrap">
+              <span className="text-fire-red-light text-sm sm:text-base font-semibold group-hover:underline whitespace-nowrap">
                 Learn more →
               </span>
             </div>
