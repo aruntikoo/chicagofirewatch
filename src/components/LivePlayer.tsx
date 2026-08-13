@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Play, Maximize, Volume2, VolumeX, Heart } from "lucide-react";
+import Link from "next/link";
 
 export default function LivePlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -103,6 +104,26 @@ export default function LivePlayer() {
           <p className="text-sm text-muted text-center sm:text-left">
             Help keep the live view running for Fire fans.
           </p>
+        </div>
+
+        {/* Sponsor placeholder — secondary to donate CTA */}
+        <div className="mt-6">
+          <p className="text-[10px] uppercase tracking-widest text-muted/70 text-center mb-2">
+            Sponsor
+          </p>
+          <Link
+            href="/sponsor"
+            className="group block w-full max-w-3xl mx-auto rounded-lg border border-dashed border-fire-red/30 bg-charcoal/60 hover:border-fire-red/50 hover:bg-charcoal/80 transition-colors"
+          >
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 px-4 py-5 sm:py-6 min-h-[72px]">
+              <span className="text-warm-white/90 font-medium text-sm sm:text-base text-center">
+                Sponsor this live cam — Reach Chicago Fire fans
+              </span>
+              <span className="text-fire-red-light text-sm font-semibold group-hover:underline whitespace-nowrap">
+                Learn more →
+              </span>
+            </div>
+          </Link>
         </div>
 
         <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
