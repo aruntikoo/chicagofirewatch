@@ -1,7 +1,6 @@
 import { Flame, Instagram, Youtube } from "lucide-react";
 import Link from "next/link";
 
-// Official-style X (formerly Twitter) logo as inline SVG
 function XIcon({ size = 16, className = "" }: { size?: number; className?: string }) {
   return (
     <svg
@@ -71,6 +70,11 @@ export default function Footer() {
               <li>
                 <Link href="/sponsor" className="hover:text-fire-red-light transition-colors">
                   Sponsor
+                </Link>
+              </li>
+              <li>
+                <Link href="/partners" className="hover:text-fire-red-light transition-colors">
+                  Retail partners
                 </Link>
               </li>
             </ul>

@@ -45,7 +45,7 @@ export default function CommunityShop() {
               Support the Watch
             </h2>
             <p className="text-muted max-w-2xl mx-auto">
-              Help keep the cameras rolling. Tips, merch, and sponsorships keep
+              Help keep the cameras rolling. Tips, merch partners, and sponsorships keep
               the live view running for Fire fans.
             </p>
           </div>
@@ -54,14 +54,14 @@ export default function CommunityShop() {
             <div className="steel-border rounded-xl bg-charcoal/90 p-6 text-center hover:border-fire-red/40 transition-colors">
               <h3 className="text-lg font-bold text-warm-white mb-2">Merch</h3>
               <p className="text-sm text-muted mb-5">
-                "I Watched It Rise" tees, hoodies, and hard-hat stickers.
+                Retail partners: connect your online Fire or soccer store with our audience.
               </p>
-              <button
-                disabled
-                className="px-4 py-2 rounded-lg border border-fire-red/40 text-fire-red-light text-sm font-medium opacity-70 cursor-not-allowed"
+              <Link
+                href="/partners"
+                className="inline-block px-4 py-2 rounded-lg border border-fire-red/40 text-fire-red-light hover:bg-fire-red/10 text-sm font-medium transition-colors"
               >
-                Shop Soon
-              </button>
+                Retail partners: get in touch
+              </Link>
             </div>
 
             <div className="steel-border rounded-xl bg-charcoal/90 p-6 text-center hover:border-fire-red/40 transition-colors">
@@ -103,9 +103,9 @@ export default function CommunityShop() {
           <p className="text-muted leading-relaxed mb-6">
             Chicago Fire Watch is a passion project giving fans a unique
             high-rise vantage point of the new stadium at The 78. Inspired by
-            the timeless Chicago School architecture and the "Dear
-            Chicago" vision, we stream the construction with minimal
-            oversight so anyone can follow the rise of the city's newest
+            the timeless Chicago School architecture and the &quot;Dear
+            Chicago&quot; vision, we stream the construction with minimal
+            oversight so anyone can follow the rise of the city&apos;s newest
             landmark.
           </p>
           <p className="text-sm text-muted/80">
