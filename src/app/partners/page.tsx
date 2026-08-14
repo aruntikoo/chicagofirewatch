@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     "Partner your online store with Chicago Fire Watch. Reach Fire fans watching the stadium rise at The 78 via affiliate or hybrid retail partnerships.",
 };
 
- cons options = [
+const options = [
   {
     name: "Affiliate",
     detail: "Featured Shop link + optional code · you pay a % of tracked sales",
@@ -161,7 +161,7 @@ export default function PartnersPage() {
               Propose a partnership
             </h2>
             <p className="text-muted text-sm text-center mb-8">
-              Tell us about your shop. We&apos;ll reply with next steps and tracking options.
+              Tell us about your shop. We'll reply with next steps and tracking options.
             </p>
             <PartnerInterestForm />
           </div>
