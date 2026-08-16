@@ -65,6 +65,7 @@ export default function LivePlayer() {
                 src={youtubeEmbedSrc}
                 title="Chicago Fire Stadium Live Construction"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
               />
             )}
