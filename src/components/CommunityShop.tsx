@@ -1,4 +1,6 @@
 import Link from "next/link";
+import EmailSignup from "@/components/EmailSignup";
+import ViewerPoll from "@/components/ViewerPoll";
 
 export default function CommunityShop() {
   const supportUrl = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
@@ -12,22 +14,33 @@ export default function CommunityShop() {
               Community
             </h2>
             <p className="text-muted max-w-2xl mx-auto">
-              Join fellow fans watching the stadium rise. Comments and chat will
-              open once the live stream is active.
+              Stay close to the build. Get notified about live streams, major
+              milestones, and new timelapse videos — and share what you are most
+              excited to see.
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto steel-border rounded-xl bg-charcoal/80 p-8 text-center">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-fire-red/20 flex items-center justify-center">
-              <span className="text-3xl">🔥</span>
+          <div className="max-w-3xl mx-auto grid gap-6 md:grid-cols-2">
+            {/* Email capture */}
+            <div className="steel-border rounded-xl bg-charcoal/80 p-6">
+              <div className="w-12 h-12 mb-4 rounded-full bg-fire-red/20 flex items-center justify-center">
+                <span className="text-2xl">🔥</span>
+              </div>
+              <h3 className="text-lg font-bold text-warm-white mb-2">
+                Join the Watch List
+              </h3>
+              <p className="text-sm text-muted mb-5">
+                Occasional emails when the cam is live, when a major phase is
+                completed, or when a new cumulative timelapse is published.
+              </p>
+              <EmailSignup />
             </div>
-            <h3 className="text-xl font-bold text-warm-white mb-2">
-              Coming Soon
-            </h3>
-            <p className="text-sm text-muted mb-6">
-              Live chat (YouTube + moderated comments), viewer polls, and
-              milestone celebrations will appear here. Stay tuned.
-            </p>
+
+            {/* Viewer poll */}
+            <ViewerPoll />
+          </div>
+
+          <div className="mt-8 text-center">
             <a
               href="#live"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-fire-red hover:bg-fire-red-light text-white font-semibold text-sm transition-colors"
@@ -45,8 +58,8 @@ export default function CommunityShop() {
               Support the Watch
             </h2>
             <p className="text-muted max-w-2xl mx-auto">
-              Help keep the cameras rolling. Tips, merch partners, and sponsorships keep
-              the live view running for Fire fans.
+              Help keep the cameras rolling. Tips, merch partners, and
+              sponsorships keep the live view running for Fire fans.
             </p>
           </div>
 
@@ -54,7 +67,8 @@ export default function CommunityShop() {
             <div className="steel-border rounded-xl bg-charcoal/90 p-6 text-center hover:border-fire-red/40 transition-colors">
               <h3 className="text-lg font-bold text-warm-white mb-2">Merch</h3>
               <p className="text-sm text-muted mb-5">
-                Retail partners: connect your online Fire or soccer store with our audience.
+                Retail partners: connect your online Fire or soccer store with
+                our audience.
               </p>
               <Link
                 href="/partners"
@@ -103,9 +117,9 @@ export default function CommunityShop() {
           <p className="text-muted leading-relaxed mb-6">
             Chicago Fire Watch is a passion project giving fans a unique
             high-rise vantage point of the new stadium at The 78. Inspired by
-            the timeless Chicago School architecture and the &quot;Dear
-            Chicago&quot; vision, we stream the construction with minimal
-            oversight so anyone can follow the rise of the city&apos;s newest
+            the timeless Chicago School architecture and the "Dear
+            Chicago" vision, we stream the construction with minimal
+            oversight so anyone can follow the rise of the city's newest
             landmark.
           </p>
           <p className="text-sm text-muted/80">
