@@ -1,52 +1,17 @@
-const milestones = [
-  {
-    year: "2025",
-    title: "Announcement & Vision",
-    description:
-      "Joe Mansueto announces privately funded stadium at The 78. Dear Chicago vision unveiled.",
-    status: "completed",
-  },
-  {
-    year: "Mar 2026",
-    title: "Groundbreaking",
-    description:
-      "Official groundbreaking ceremony. Pile driving and foundation work begins.",
-    status: "completed",
-  },
-  {
-    year: "2026–2027",
-    title: "Structural Steel Rising",
-    description:
-      "Tower cranes erect steel structure. Brick, steel, and glass facade takes shape.",
-    status: "current",
-  },
-  {
-    year: "2027",
-    title: "Interior Fit-Out",
-    description:
-      "Seating, pitch, premium hospitality, and fan experience areas installed.",
-    status: "upcoming",
-  },
-  {
-    year: "2028",
-    title: "Grand Opening",
-    description:
-      "Stadium opens for 2028 MLS season — first major Chicago pro stadium in 30+ years.",
-    status: "upcoming",
-  },
-];
+import { milestones, timelapseVideos } from "@/data/milestones";
+import { Play } from "lucide-react";
 
 export default function Timeline() {
   return (
     <section id="timeline" className="py-16 md:py-24 brick-texture">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold text-warm-white mb-3">
             Construction Timeline
           </h2>
           <p className="text-muted max-w-2xl mx-auto">
-            Follow the journey from groundbreaking to opening day. Updated as
-            major milestones are reached.
+            Follow the journey from groundbreaking to opening day. Click Watch on
+            any phase that has a recorded video or timelapse.
           </p>
         </div>
 
@@ -56,7 +21,7 @@ export default function Timeline() {
           <div className="space-y-8 md:space-y-12">
             {milestones.map((item, idx) => (
               <div
-                key={item.year}
+                key={item.id}
                 className={`relative flex flex-col md:flex-row gap-6 md:gap-0 ${
                   idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
                 }`}
@@ -105,6 +70,22 @@ export default function Timeline() {
                     <p className="text-sm text-muted leading-relaxed">
                       {item.description}
                     </p>
+
+                    {item.videoId && (
+                      <div className={`mt-3 ${
+                        idx % 2 === 0 ? "md:flex md:justify-end" : ""
+                      }`}>
+                        <a
+                          href={`https://www.youtube.com/watch?v=${item.videoId}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-fire-red/15 hover:bg-fire-red/25 text-fire-red-light text-xs font-semibold transition-colors"
+                        >
+                          <Play className="w-3.5 h-3.5 fill-current" />
+                          {item.videoLabel || "Watch Phase"}
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -113,6 +94,50 @@ export default function Timeline() {
             ))}
           </div>
         </div>
+
+        {/* Cumulative Timelapse section */}
+        {timelapseVideos.length > 0 && (
+          <div className="mt-16 pt-12 border-t border-fire-red/20">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold text-warm-white mb-2">
+                Cumulative Timelapse
+              </h3>
+              <p className="text-muted text-sm max-w-xl mx-auto">
+                Watch the build progress from the beginning to the latest
+                available footage.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto">
+              {timelapseVideos.map((tl) => (
+                <a
+                  key={tl.id}
+                  href={`https://www.youtube.com/watch?v=${tl.videoId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group steel-border rounded-xl bg-charcoal/90 p-5 hover:border-fire-red/40 transition-colors"
+                >
+                  <p className="text-xs uppercase tracking-wider text-fire-red-light mb-1">
+                    {tl.dateLabel}
+                  </p>
+                  <h4 className="font-semibold text-warm-white group-hover:text-fire-red-light transition-colors">
+                    {tl.title}
+                  </h4>
+                  <p className="text-sm text-muted mt-1">{tl.description}</p>
+                  <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-fire-red-light">
+                    <Play className="w-3.5 h-3.5 fill-current" />
+                    Watch Timelapse
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {timelapseVideos.length === 0 && (
+          <p className="mt-12 text-center text-sm text-muted/70">
+            Cumulative timelapse videos will appear here as they are published.
+          </p>
+        )}
       </div>
     </section>
   );
