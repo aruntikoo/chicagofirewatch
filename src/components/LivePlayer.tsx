@@ -9,15 +9,16 @@ export default function LivePlayer() {
   const [muted, setMuted] = useState(true);
 
   // ---------------------------------------------------------------
-  // EMBED SOURCE – switch between recorded test video and live stream
+  // EMBED SOURCE – switch between live stream and recorded video
   // ---------------------------------------------------------------
-  // CURRENT (for testing): specific recorded Unlisted stream
+  // CURRENT: permanent channel live embed (shows whatever is live on the channel)
+  // Channel ID: UCCpOx6W4-N2BhFRHdc1043w
   const youtubeEmbedSrc =
-    "https://www.youtube.com/embed/Fnonw0DiIaQ?autoplay=1&mute=1";
+    "https://www.youtube.com/embed/live_stream?channel=UCCpOx6W4-N2BhFRHdc1043w&autoplay=1&mute=1";
 
-  // LIVE (restore this when a live stream is running on the channel):
+  // RECORDED (use this for testing a specific archived stream):
   // const youtubeEmbedSrc =
-  //   "https://www.youtube.com/embed/live_stream?channel=UCCpOx6W4-N2BhFRHdc1043w&autoplay=1&mute=1";
+  //   "https://www.youtube.com/embed/Fnonw0DiIaQ?autoplay=1&mute=1";
   // ---------------------------------------------------------------
 
   const supportUrl = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
