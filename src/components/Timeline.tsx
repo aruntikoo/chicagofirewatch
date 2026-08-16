@@ -19,83 +19,97 @@ export default function Timeline() {
           <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-fire-red/30 -translate-x-1/2 hidden sm:block" />
 
           <div className="space-y-8 md:space-y-12">
-            {milestones.map((item, idx) => (
-              <div
-                key={item.id}
-                className={`relative flex flex-col md:flex-row gap-6 md:gap-0 ${
-                  idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                }`}
-              >
-                <div className="absolute left-4 md:left-1/2 w-4 h-4 rounded-full border-2 border-fire-red bg-charcoal -translate-x-1/2 z-10 hidden sm:block">
-                  {item.status === "current" && (
-                    <span className="absolute inset-0 rounded-full bg-fire-red animate-ping opacity-40" />
-                  )}
-                </div>
+            {milestones.map((item, idx) => {
+              const watchHref =
+                item.videoHref ||
+                (item.videoId
+                  ? `https://www.youtube.com/watch?v=${item.videoId}`
+                  : null);
+              const isExternal = Boolean(watchHref && watchHref.startsWith("http"));
 
+              return (
                 <div
-                  className={`sm:ml-12 md:ml-0 md:w-5/12 ${
-                    idx % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"
+                  key={item.id}
+                  className={`relative flex flex-col md:flex-row gap-6 md:gap-0 ${
+                    idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
                   }`}
                 >
-                  <div
-                    className={`inline-block px-4 py-3 rounded-xl border steel-border bg-charcoal/90 ${
-                      item.status === "current"
-                        ? "border-fire-red/50 shadow-lg shadow-fire-red/10"
-                        : "border-fire-red/15"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2 mb-1">
-                      <span
-                        className={`text-xs font-bold uppercase tracking-wider ${
-                          item.status === "current"
-                            ? "text-fire-red-light"
-                            : item.status === "completed"
-                            ? "text-green-400"
-                            : "text-muted"
-                        }`}
-                      >
-                        {item.status === "current"
-                          ? "● In Progress"
-                          : item.status === "completed"
-                          ? "✓ Completed"
-                          : "Upcoming"}
-                      </span>
-                    </div>
-                    <p className="text-sm font-semibold text-fire-red-light mb-1">
-                      {item.year}
-                    </p>
-                    <h3 className="text-lg font-bold text-warm-white mb-1">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm text-muted leading-relaxed">
-                      {item.description}
-                    </p>
-
-                    {item.videoId && (
-                      <div className={`mt-3 ${
-                        idx % 2 === 0 ? "md:flex md:justify-end" : ""
-                      }`}>
-                        <a
-                          href={`https://www.youtube.com/watch?v=${item.videoId}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-fire-red/15 hover:bg-fire-red/25 text-fire-red-light text-xs font-semibold transition-colors"
-                        >
-                          <Play className="w-3.5 h-3.5 fill-current" />
-                          {item.videoLabel || "Watch Phase"}
-                        </a>
-                      </div>
+                  <div className="absolute left-4 md:left-1/2 w-4 h-4 rounded-full border-2 border-fire-red bg-charcoal -translate-x-1/2 z-10 hidden sm:block">
+                    {item.status === "current" && (
+                      <span className="absolute inset-0 rounded-full bg-fire-red animate-ping opacity-40" />
                     )}
                   </div>
-                </div>
 
-                <div className="hidden md:block md:w-5/12" />
-              </div>
-            ))}
+                  <div
+                    className={`sm:ml-12 md:ml-0 md:w-5/12 ${
+                      idx % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"
+                    }`}
+                  >
+                    <div
+                      className={`inline-block px-4 py-3 rounded-xl border steel-border bg-charcoal/90 ${
+                        item.status === "current"
+                          ? "border-fire-red/50 shadow-lg shadow-fire-red/10"
+                          : "border-fire-red/15"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 mb-1">
+                        <span
+                          className={`text-xs font-bold uppercase tracking-wider ${
+                            item.status === "current"
+                              ? "text-fire-red-light"
+                              : item.status === "completed"
+                              ? "text-green-400"
+                              : "text-muted"
+                          }`}
+                        >
+                          {item.status === "current"
+                            ? "● In Progress"
+                            : item.status === "completed"
+                            ? "✓ Completed"
+                            : "Upcoming"}
+                        </span>
+                      </div>
+                      <p className="text-sm font-semibold text-fire-red-light mb-1">
+                        {item.year}
+                      </p>
+                      <h3 className="text-lg font-bold text-warm-white mb-1">
+                        {item.title}
+                      </h3>
+                      <p className="text-sm text-muted leading-relaxed">
+                        {item.description}
+                      </p>
+
+                      {watchHref && (
+                        <div
+                          className={`mt-3 ${
+                            idx % 2 === 0 ? "md:flex md:justify-end" : ""
+                          }`}
+                        >
+                          <a
+                            href={watchHref}
+                            {...(isExternal
+                              ? {
+                                  target: "_blank",
+                                  rel: "noopener noreferrer",
+                                }
+                              : {})}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-fire-red/15 hover:bg-fire-red/25 text-fire-red-light text-xs font-semibold transition-colors"
+                          >
+                            <Play className="w-3.5 h-3.5 fill-current" />
+                            {item.videoLabel || "Watch Phase"}
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="hidden md:block md:w-5/12" />
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* Cumulative Timelapse section */}
         {timelapseVideos.length > 0 && (
           <div className="mt-16 pt-12 border-t border-fire-red/20">
             <div className="text-center mb-8">
