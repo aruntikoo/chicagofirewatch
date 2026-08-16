@@ -10,6 +10,8 @@ export interface Milestone {
   videoId?: string;
   /** Optional short label for the video button */
   videoLabel?: string;
+  /** Optional custom href (e.g. /#live). Overrides videoId when set. */
+  videoHref?: string;
 }
 
 export const milestones: Milestone[] = [
@@ -39,9 +41,8 @@ export const milestones: Milestone[] = [
     description:
       "Tower cranes erect steel structure. Brick, steel, and glass facade takes shape.",
     status: "current",
-    // Temporary test / early recording – replace or remove as new phase videos are added
-    videoId: "Fnonw0DiIaQ",
-    videoLabel: "Watch Current Phase",
+    videoHref: "/#live",
+    videoLabel: "Watch Live Feed",
   },
   {
     id: "interior",
