@@ -138,27 +138,6 @@ export default function LivePlayer() {
             </div>
           </Link>
         </div>
-
-        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { label: "Project", value: "Chicago Fire Stadium" },
-            { label: "Location", value: "The 78, South Loop" },
-            { label: "Target Open", value: "2028 MLS Season" },
-            { label: "Capacity", value: "22,000+ seats" },
-          ].map((stat) => (
-            <div
-              key={stat.label}
-              className="bg-charcoal/80 border border-fire-red/15 rounded-lg px-4 py-3"
-            >
-              <p className="text-xs uppercase tracking-wider text-muted mb-1">
-                {stat.label}
-              </p>
-              <p className="font-semibold text-warm-white text-sm sm:text-base">
-                {stat.value}
-              </p>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );
