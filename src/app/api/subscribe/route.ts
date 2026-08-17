@@ -23,11 +23,14 @@ export async function POST(request: NextRequest) {
 
     // Create subscriber without forcing type: regular so ButtonDown
     // uses double opt-in (unactivated → confirmation email).
+    // X-Buttondown-Collision-Behavior: add allows previously unsubscribed /
+    // rejected addresses to resubscribe (merges data and sets type to regular).
     const res = await fetch("https://api.buttondown.com/v1/subscribers", {
       method: "POST",
       headers: {
         Authorization: `Token ${apiKey}`,
         "Content-Type": "application/json",
+        "X-Buttondown-Collision-Behavior": "add",
       },
       body: JSON.stringify({
         email_address: email,
@@ -40,13 +43,14 @@ export async function POST(request: NextRequest) {
 
     const data = await res.json().catch(() => ({}));
 
-    // Already subscribed — treat as success for the user
+    // Already subscribed or successful collision merge — treat as success for the user
     if (
       res.status === 400 &&
       typeof data === "object" &&
       data !== null &&
       (JSON.stringify(data).toLowerCase().includes("already") ||
-        JSON.stringify(data).toLowerCase().includes("exist"))
+        JSON.stringify(data).toLowerCase().includes("exist") ||
+        JSON.stringify(data).toLowerCase().includes("collision"))
     ) {
       return NextResponse.json({
         success: true,
