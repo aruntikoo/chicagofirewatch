@@ -1,6 +1,7 @@
 import Link from "next/link";
 import EmailSignup from "@/components/EmailSignup";
 import ViewerPoll from "@/components/ViewerPoll";
+import PastPolls from "@/components/PastPolls";
 
 export default function CommunityShop() {
   const supportUrl = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
@@ -37,6 +38,8 @@ export default function CommunityShop() {
 
             <ViewerPoll />
           </div>
+
+          <PastPolls />
         </div>
       </section>
 
