@@ -7,9 +7,9 @@ export default function CommunityShop() {
 
   return (
     <>
-      <section id="community" className="py-16 md:py-20 bg-background">
+      <section id="community" className="pt-16 md:pt-20 pb-8 md:pb-10 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
+          <div className="text-center mb-8">
             <h2 className="text-3xl sm:text-4xl font-bold text-warm-white mb-3">
               Community
             </h2>
@@ -21,7 +21,6 @@ export default function CommunityShop() {
           </div>
 
           <div className="max-w-3xl mx-auto grid gap-6 md:grid-cols-2">
-            {/* Email capture */}
             <div className="steel-border rounded-xl bg-charcoal/80 p-6">
               <div className="w-12 h-12 mb-4 rounded-full bg-fire-red/20 flex items-center justify-center">
                 <span className="text-2xl">🔥</span>
@@ -36,73 +35,67 @@ export default function CommunityShop() {
               <EmailSignup />
             </div>
 
-            {/* Viewer poll */}
             <ViewerPoll />
-          </div>
-
-          <div className="mt-8 text-center">
-            <a
-              href="#live"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-fire-red hover:bg-fire-red-light text-white font-semibold text-sm transition-colors"
-            >
-              Watch the Live Feed
-            </a>
           </div>
         </div>
       </section>
 
-      <section id="shop" className="py-16 md:py-20 brick-texture">
+      <section id="shop" className="pt-8 md:pt-10 pb-16 md:pb-20 brick-texture">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl font-bold text-warm-white mb-3">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-warm-white mb-2">
               Support the Watch
             </h2>
-            <p className="text-muted max-w-2xl mx-auto">
-              Help keep the cameras rolling. Tips, merch partners, and
-              sponsorships keep the live view running for Fire fans.
+            <p className="text-sm text-muted max-w-xl mx-auto">
+              Tips, merch partners, and sponsorships keep the live view running.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="steel-border rounded-xl bg-charcoal/90 p-6 text-center hover:border-fire-red/40 transition-colors">
-              <h3 className="text-lg font-bold text-warm-white mb-2">Merch</h3>
-              <p className="text-sm text-muted mb-5">
-                Retail partners: connect your online Fire or soccer store with
-                our audience.
+          <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="steel-border rounded-xl bg-charcoal/90 p-5 text-center hover:border-fire-red/40 transition-colors flex flex-col">
+              <h3 className="text-base font-bold text-warm-white mb-1.5">
+                Merch
+              </h3>
+              <p className="text-xs text-muted mb-4 flex-1">
+                Retail partners: reach Fire fans here.
               </p>
               <Link
                 href="/partners"
-                className="inline-block px-4 py-2 rounded-lg border border-fire-red/40 text-fire-red-light hover:bg-fire-red/10 text-sm font-medium transition-colors"
+                className="inline-block px-3 py-2 rounded-lg border border-fire-red/40 text-fire-red-light hover:bg-fire-red/10 text-xs font-medium transition-colors"
               >
-                Retail partners: get in touch
+                Partner with us
               </Link>
             </div>
 
-            <div className="steel-border rounded-xl bg-charcoal/90 p-6 text-center hover:border-fire-red/40 transition-colors">
-              <h3 className="text-lg font-bold text-warm-white mb-2">Donate</h3>
-              <p className="text-sm text-muted mb-5">
-                Support hosting, camera gear, and stream uptime.
+            <div className="steel-border rounded-xl bg-charcoal/90 p-5 text-center hover:border-fire-red/40 transition-colors flex flex-col">
+              <h3 className="text-base font-bold text-warm-white mb-1.5">
+                Donate
+              </h3>
+              <p className="text-xs text-muted mb-4 flex-1">
+                Hosting, gear, and stream uptime.
               </p>
               <a
                 href={supportUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block px-4 py-2 rounded-lg bg-fire-red hover:bg-fire-red-light text-white text-sm font-medium transition-colors"
+                className="inline-block px-3 py-2 rounded-lg bg-fire-red hover:bg-fire-red-light text-white text-xs font-medium transition-colors"
               >
                 Support the Cam
               </a>
             </div>
 
-            <div className="steel-border rounded-xl bg-charcoal/90 p-6 text-center hover:border-fire-red/40 transition-colors">
-              <h3 className="text-lg font-bold text-warm-white mb-2">Sponsor</h3>
-              <p className="text-sm text-muted mb-5">
-                Local brands and construction partners welcome.
+            <div className="steel-border rounded-xl bg-charcoal/90 p-5 text-center hover:border-fire-red/40 transition-colors flex flex-col">
+              <h3 className="text-base font-bold text-warm-white mb-1.5">
+                Sponsor
+              </h3>
+              <p className="text-xs text-muted mb-4 flex-1">
+                Local brands and build partners.
               </p>
               <Link
                 href="/sponsor"
-                className="inline-block px-4 py-2 rounded-lg border border-fire-red/40 text-fire-red-light hover:bg-fire-red/10 text-sm font-medium transition-colors"
+                className="inline-block px-3 py-2 rounded-lg border border-fire-red/40 text-fire-red-light hover:bg-fire-red/10 text-xs font-medium transition-colors"
               >
-                Get in Touch
+                Get in touch
               </Link>
             </div>
           </div>
