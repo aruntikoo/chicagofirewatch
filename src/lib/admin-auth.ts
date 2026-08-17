@@ -19,15 +19,6 @@ function toBase64Url(buf: ArrayBuffer | Uint8Array): string {
   return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-function fromBase64Url(s: string): Uint8Array {
-  const pad = s.length % 4 === 0 ? "" : "=".repeat(4 - (s.length % 4));
-  const b64 = s.replace(/-/g, "+").replace(/_/g, "/") + pad;
-  const bin = atob(b64);
-  const out = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
-  return out;
-}
-
 async function hmacSign(message: string, secret: string): Promise<string> {
   const key = await crypto.subtle.importKey(
     "raw",
@@ -65,9 +56,6 @@ export function isAdminConfigured(): boolean {
 export function checkAdminPassword(password: string): boolean {
   const secrets = getSecrets();
   if (!secrets) return false;
-  if (password.length !== secrets.password.length) {
-    // still do a compare-length work to avoid trivial timing leak on length alone
-  }
   const a = password;
   const b = secrets.password;
   let ok = a.length === b.length ? 0 : 1;
