@@ -1,6 +1,6 @@
 import { pinnedNews, type NewsItem } from "@/data/pinnedNews";
 
-const MAX_AUTO = 6;
+const MAX_AUTO = 4;
 const FETCH_TIMEOUT_MS = 8_000;
 
 /** Official / club-leaning Fire coverage */
