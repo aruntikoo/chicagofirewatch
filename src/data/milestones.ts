@@ -82,25 +82,5 @@ export const timelapseVideos: TimelapseVideo[] = [
   // },
 ];
 
-/** Simple viewer poll definition */
-export interface PollOption {
-  id: string;
-  label: string;
-}
-
-export interface Poll {
-  id: string;
-  question: string;
-  options: PollOption[];
-}
-
-export const currentPoll: Poll = {
-  id: "milestone-excitement-2026",
-  question: "Which upcoming milestone are you most excited to watch live?",
-  options: [
-    { id: "steel-topping", label: "Steel structure topping out" },
-    { id: "first-seats", label: "First seats installed" },
-    { id: "pitch", label: "Pitch / field installation" },
-    { id: "opening", label: "Opening day 2028" },
-  ],
-};
+/** @deprecated Polls live in src/data/polls.ts — re-export for any leftover imports */
+export { polls as pollCatalog, getDisplayPoll, type Poll, type PollOption } from "./polls";
