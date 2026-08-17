@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Play, Maximize, Volume2, VolumeX, Heart } from "lucide-react";
 import Link from "next/link";
+import PresenceCounter from "./PresenceCounter";
 
 export default function LivePlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -28,11 +29,14 @@ export default function LivePlayer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-fire-red live-badge" />
-              <span className="text-sm font-semibold uppercase tracking-widest text-fire-red-light">
-                Live Now
-              </span>
+            <div className="flex flex-wrap items-center gap-3 mb-2">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-fire-red live-badge" />
+                <span className="text-sm font-semibold uppercase tracking-widest text-fire-red-light">
+                  Live Now
+                </span>
+              </div>
+              <PresenceCounter />
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-warm-white">
               Chicago Fire Stadium
