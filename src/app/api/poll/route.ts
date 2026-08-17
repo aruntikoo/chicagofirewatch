@@ -1,18 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Redis } from "@upstash/redis";
+import { getRedis } from "@/lib/redis";
 import {
+  countKey,
   getDisplayPoll,
   getPollById,
   isPollOpen,
-  type Poll,
-} from "@/data/polls";
-
-function getRedis(): Redis | null {
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!url || !token) return null;
-  return new Redis({ url, token });
-}
+  readCounts,
+  votersKey,
+  type CatalogPoll,
+} from "@/lib/poll-catalog";
 
 function isValidSessionId(id: unknown): id is string {
   return (
@@ -23,41 +19,18 @@ function isValidSessionId(id: unknown): id is string {
   );
 }
 
-function countKey(pollId: string, optionId: string) {
-  return `poll:${pollId}:count:${optionId}`;
-}
-
-function votersKey(pollId: string) {
-  return `poll:${pollId}:voters`;
-}
-
-async function readCounts(
-  redis: Redis,
-  poll: Poll
-): Promise<Record<string, number>> {
-  const counts: Record<string, number> = {};
-  await Promise.all(
-    poll.options.map(async (opt) => {
-      const raw = await redis.get<number | string>(countKey(poll.id, opt.id));
-      const n = typeof raw === "number" ? raw : Number(raw);
-      counts[opt.id] = Number.isFinite(n) ? n : 0;
-    })
-  );
-  return counts;
-}
-
-function emptyCounts(poll: Poll): Record<string, number> {
+function emptyCounts(poll: CatalogPoll): Record<string, number> {
   const counts: Record<string, number> = {};
   for (const opt of poll.options) counts[opt.id] = 0;
   return counts;
 }
 
-function serializePoll(poll: Poll, open: boolean) {
+function serializePoll(poll: CatalogPoll, open: boolean) {
   return {
     id: poll.id,
     question: poll.question,
     options: poll.options,
-    status: poll.status,
+    status: poll.status === "draft" ? "closed" : poll.status,
     startsAt: poll.startsAt,
     endsAt: poll.endsAt,
     open,
@@ -66,8 +39,8 @@ function serializePoll(poll: Poll, open: boolean) {
 
 export async function GET(request: NextRequest) {
   try {
-    const poll = getDisplayPoll();
-    if (!poll) {
+    const poll = await getDisplayPoll();
+    if (!poll || poll.status === "draft") {
       return NextResponse.json({ error: "No poll configured" }, { status: 404 });
     }
 
@@ -86,7 +59,7 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    const counts = await readCounts(redis, poll);
+    const counts = await readCounts(poll);
     const total = Object.values(counts).reduce((a, b) => a + b, 0);
 
     let hasVoted = false;
@@ -129,15 +102,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid optionId" }, { status: 400 });
     }
 
-    const poll = pollId ? getPollById(pollId) : getDisplayPoll();
-    if (!poll) {
+    const poll = pollId ? await getPollById(pollId) : await getDisplayPoll();
+    if (!poll || poll.status === "draft") {
       return NextResponse.json({ error: "Poll not found" }, { status: 404 });
     }
 
     const open = isPollOpen(poll);
     if (!open) {
       const redis = getRedis();
-      const counts = redis ? await readCounts(redis, poll) : emptyCounts(poll);
+      const counts = redis ? await readCounts(poll) : emptyCounts(poll);
       const total = Object.values(counts).reduce((a, b) => a + b, 0);
       return NextResponse.json(
         {
@@ -173,14 +146,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // One vote per session: only increment if newly added to the set
     const added = await redis.sadd(votersKey(poll.id), sessionId);
     if (added === 1) {
       await redis.incr(countKey(poll.id, optionId));
       await redis.set(`poll:${poll.id}:choice:${sessionId}`, optionId);
     }
 
-    const counts = await readCounts(redis, poll);
+    const counts = await readCounts(poll);
     const total = Object.values(counts).reduce((a, b) => a + b, 0);
     const selected =
       added === 1

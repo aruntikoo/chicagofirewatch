@@ -1,38 +1,13 @@
 import { NextResponse } from "next/server";
-import { Redis } from "@upstash/redis";
+import { getRedis } from "@/lib/redis";
 import {
   formatPollDateRange,
   getClosedPolls,
-  type Poll,
-} from "@/data/polls";
+  readCounts,
+  type CatalogPoll,
+} from "@/lib/poll-catalog";
 
-function getRedis(): Redis | null {
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!url || !token) return null;
-  return new Redis({ url, token });
-}
-
-function countKey(pollId: string, optionId: string) {
-  return `poll:${pollId}:count:${optionId}`;
-}
-
-async function readCounts(
-  redis: Redis,
-  poll: Poll
-): Promise<Record<string, number>> {
-  const counts: Record<string, number> = {};
-  await Promise.all(
-    poll.options.map(async (opt) => {
-      const raw = await redis.get<number | string>(countKey(poll.id, opt.id));
-      const n = typeof raw === "number" ? raw : Number(raw);
-      counts[opt.id] = Number.isFinite(n) ? n : 0;
-    })
-  );
-  return counts;
-}
-
-function emptyCounts(poll: Poll): Record<string, number> {
+function emptyCounts(poll: CatalogPoll): Record<string, number> {
   const counts: Record<string, number> = {};
   for (const opt of poll.options) counts[opt.id] = 0;
   return counts;
@@ -40,14 +15,12 @@ function emptyCounts(poll: Poll): Record<string, number> {
 
 export async function GET() {
   try {
-    const closed = getClosedPolls(5);
+    const closed = await getClosedPolls(5);
     const redis = getRedis();
 
     const items = await Promise.all(
       closed.map(async (poll) => {
-        const counts = redis
-          ? await readCounts(redis, poll)
-          : emptyCounts(poll);
+        const counts = redis ? await readCounts(poll) : emptyCounts(poll);
         const total = Object.values(counts).reduce((a, b) => a + b, 0);
         return {
           poll: {
