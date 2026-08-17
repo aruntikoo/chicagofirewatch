@@ -119,7 +119,7 @@ export default function LivePlayer() {
           </p>
         </div>
 
-        {/* Sponsor placeholder — leaderboard-style full width under player */}
+        {/* Sponsor placeholder under player */}
         <div className="mt-6">
           <p className="text-[10px] uppercase tracking-widest text-muted/70 text-center mb-2">
             Advertisement
