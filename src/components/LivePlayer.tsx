@@ -16,7 +16,7 @@ export default function LivePlayer() {
   // Update LIVE_VIDEO_ID whenever you start a new stream (unless you keep
   // the same persistent live event).
   // ---------------------------------------------------------------
-  const LIVE_VIDEO_ID = "Fnonw0DiIaQ"; // ← current live (update if stream id changes)
+  const LIVE_VIDEO_ID = "2hJ6S-VnbOg"; // current live: youtube.com/live/2hJ6S-VnbOg
 
   // Direct video embed (recommended while live)
   const youtubeEmbedSrc = `https://www.youtube.com/embed/${LIVE_VIDEO_ID}?autoplay=1&mute=1&playsinline=1&rel=0`;
