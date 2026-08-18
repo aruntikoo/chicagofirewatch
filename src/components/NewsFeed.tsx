@@ -1,7 +1,8 @@
 import { getNewsFeed, formatRelativeTime } from "@/lib/news";
 import { getPodcastEpisodes } from "@/lib/podcast";
 import type { NewsItem } from "@/data/pinnedNews";
-import { ExternalLink, Pin, Headphones } from "lucide-react";
+import { ExternalLink, Pin } from "lucide-react";
+import PodcastEpisodeList from "@/components/PodcastEpisodeList";
 
 function TagBadge({ tag }: { tag?: NewsItem["tag"] }) {
   if (!tag) return null;
@@ -114,7 +115,7 @@ export default async function NewsFeed() {
                     {podcast.showName}
                   </h3>
                   <p className="mt-1 text-sm text-muted">
-                    Independent Fire talk — opens on the show’s site.
+                    Play recent episodes here. Full archive on the show’s site.
                   </p>
                 </div>
                 <a
@@ -127,44 +128,19 @@ export default async function NewsFeed() {
                 </a>
               </div>
 
-              <div className="flex flex-col gap-2">
-                {podcast.episodes.map((ep) => (
-                  <a
-                    key={ep.id}
-                    href={ep.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex gap-2.5 sm:gap-3 items-start rounded-lg border border-fire-red/15 bg-charcoal/60 hover:border-fire-red/35 hover:bg-charcoal/90 px-3 sm:px-4 py-2.5 sm:py-3 transition-colors"
-                  >
-                    <div className="mt-0.5 shrink-0 text-fire-red-light/80">
-                      <Headphones
-                        className="w-4 h-4 opacity-70 group-hover:opacity-100"
-                        aria-hidden
-                      />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-warm-white group-hover:text-fire-red-light leading-snug">
-                        {ep.title}
-                      </p>
-                      <p className="mt-1 text-xs text-muted">
-                        {podcast.showName}
-                        {ep.publishedAt
-                          ? ` · ${formatRelativeTime(ep.publishedAt)}`
-                          : ""}
-                        {ep.durationLabel ? ` · ${ep.durationLabel}` : ""}
-                      </p>
-                    </div>
-                  </a>
-                ))}
-              </div>
+              <PodcastEpisodeList
+                showName={podcast.showName}
+                episodes={podcast.episodes}
+                formatRelativeTime={formatRelativeTime}
+              />
             </div>
           )}
         </div>
 
         <p className="mt-5 text-[11px] text-muted/70">
-          Headlines and episodes link to original publishers. Independent fan
-          site — not affiliated with Chicago Fire FC, MLS, or the podcast
-          creators.
+          Headlines link to original publishers. Podcast audio is streamed from
+          the publisher’s feed. Independent fan site — not affiliated with
+          Chicago Fire FC, MLS, or the podcast creators.
         </p>
       </div>
     </section>
