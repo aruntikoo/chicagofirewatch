@@ -10,19 +10,24 @@ export default function LivePlayer() {
   const [muted, setMuted] = useState(true);
 
   // ---------------------------------------------------------------
-  // EMBED SOURCE – switch between live stream and recorded video
+  // EMBED SOURCE
+  // Prefer a specific live VIDEO id — more reliable than channel live_stream.
+  // From your live URL: youtube.com/live/VIDEO_ID or watch?v=VIDEO_ID
+  // Update LIVE_VIDEO_ID whenever you start a new stream (unless you keep
+  // the same persistent live event).
   // ---------------------------------------------------------------
-  // CURRENT: permanent channel live embed (shows whatever is live on the channel)
-  // Channel ID: UCCpOx6W4-N2BhFRHdc1043w
-  const youtubeEmbedSrc =
-    "https://www.youtube.com/embed/live_stream?channel=UCCpOx6W4-N2BhFRHdc1043w&autoplay=1&mute=1";
+  const LIVE_VIDEO_ID = "Fnonw0DiIaQ"; // ← current live (update if stream id changes)
 
-  // RECORDED (use this for testing a specific archived stream):
+  // Direct video embed (recommended while live)
+  const youtubeEmbedSrc = `https://www.youtube.com/embed/${LIVE_VIDEO_ID}?autoplay=1&mute=1&playsinline=1&rel=0`;
+
+  // Fallback: channel live embed (often shows "unavailable" — keep as backup only)
   // const youtubeEmbedSrc =
-  //   "https://www.youtube.com/embed/Fnonw0DiIaQ?autoplay=1&mute=1";
+  //   "https://www.youtube.com/embed/live_stream?channel=UCCpOx6W4-N2BhFRHdc1043w&autoplay=1&mute=1";
   // ---------------------------------------------------------------
 
   const supportUrl = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
+  const youtubeWatchUrl = `https://www.youtube.com/watch?v=${LIVE_VIDEO_ID}`;
 
   return (
     <section id="live" className="relative w-full">
@@ -76,8 +81,8 @@ export default function LivePlayer() {
                 className="absolute inset-0 w-full h-full"
                 src={youtubeEmbedSrc}
                 title="Chicago Fire Stadium Live Construction"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                referrerPolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="origin-when-cross-origin"
                 allowFullScreen
               />
             )}
@@ -95,13 +100,31 @@ export default function LivePlayer() {
                     LIVE • The 78 Construction Site
                   </span>
                 </div>
-                <button className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white">
+                <a
+                  href={youtubeWatchUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white"
+                  title="Open on YouTube"
+                >
                   <Maximize size={18} />
-                </button>
+                </a>
               </div>
             )}
           </div>
         </div>
+
+        <p className="mt-3 text-center text-xs text-muted">
+          Stream not loading?{" "}
+          <a
+            href={youtubeWatchUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-fire-red-light hover:underline"
+          >
+            Open on YouTube
+          </a>
+        </p>
 
         {/* Support the Cam — primary CTA under the player */}
         <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
