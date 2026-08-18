@@ -10,24 +10,18 @@ export default function LivePlayer() {
   const [muted, setMuted] = useState(true);
 
   // ---------------------------------------------------------------
-  // EMBED SOURCE
-  // Prefer a specific live VIDEO id — more reliable than channel live_stream.
-  // From your live URL: youtube.com/live/VIDEO_ID or watch?v=VIDEO_ID
-  // Update LIVE_VIDEO_ID whenever you start a new stream (unless you keep
-  // the same persistent live event).
+  // STREAM TOGGLE — set true when a real construction live is on
   // ---------------------------------------------------------------
-  const LIVE_VIDEO_ID = "2hJ6S-VnbOg"; // current live: youtube.com/live/2hJ6S-VnbOg
+  const STREAM_ENABLED = false;
 
-  // Direct video embed (recommended while live)
+  // From youtube.com/live/VIDEO_ID — update when you go live again
+  const LIVE_VIDEO_ID = "2hJ6S-VnbOg";
+
   const youtubeEmbedSrc = `https://www.youtube.com/embed/${LIVE_VIDEO_ID}?autoplay=1&mute=1&playsinline=1&rel=0`;
-
-  // Fallback: channel live embed (often shows "unavailable" — keep as backup only)
-  // const youtubeEmbedSrc =
-  //   "https://www.youtube.com/embed/live_stream?channel=UCCpOx6W4-N2BhFRHdc1043w&autoplay=1&mute=1";
+  const youtubeWatchUrl = `https://www.youtube.com/watch?v=${LIVE_VIDEO_ID}`;
   // ---------------------------------------------------------------
 
   const supportUrl = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
-  const youtubeWatchUrl = `https://www.youtube.com/watch?v=${LIVE_VIDEO_ID}`;
 
   return (
     <section id="live" className="relative w-full">
@@ -36,12 +30,23 @@ export default function LivePlayer() {
           <div>
             <div className="flex flex-wrap items-center gap-3 mb-2">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-fire-red live-badge" />
-                <span className="text-sm font-semibold uppercase tracking-widest text-fire-red-light">
-                  Live Now
-                </span>
+                {STREAM_ENABLED ? (
+                  <>
+                    <span className="w-2.5 h-2.5 rounded-full bg-fire-red live-badge" />
+                    <span className="text-sm font-semibold uppercase tracking-widest text-fire-red-light">
+                      Live Now
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="w-2.5 h-2.5 rounded-full bg-muted" />
+                    <span className="text-sm font-semibold uppercase tracking-widest text-muted">
+                      Cam offline
+                    </span>
+                  </>
+                )}
               </div>
-              <PresenceCounter />
+              {STREAM_ENABLED && <PresenceCounter />}
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-warm-white">
               Chicago Fire Stadium
@@ -58,7 +63,29 @@ export default function LivePlayer() {
 
         <div className="relative steel-border rounded-xl overflow-hidden bg-black shadow-2xl">
           <div className="aspect-video relative bg-gradient-to-br from-charcoal to-black">
-            {!isPlaying ? (
+            {!STREAM_ENABLED ? (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-[url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=80')] bg-cover bg-center">
+                <div className="absolute inset-0 bg-black/70" />
+                <div className="relative z-10 flex flex-col items-center gap-3 px-6 text-center max-w-md">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-muted">
+                    Stream offline
+                  </p>
+                  <p className="text-xl sm:text-2xl font-bold text-warm-white">
+                    Live cam coming soon
+                  </p>
+                  <p className="text-sm text-warm-white/75">
+                    We're setting up the permanent view of The 78. Join the
+                    watch list below to get notified when we go live.
+                  </p>
+                  <a
+                    href="#community"
+                    className="mt-2 inline-flex items-center px-5 py-2.5 rounded-lg bg-fire-red hover:bg-fire-red-light text-white text-sm font-semibold transition-colors"
+                  >
+                    Get notified
+                  </a>
+                </div>
+              </div>
+            ) : !isPlaying ? (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-[url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=80')] bg-cover bg-center">
                 <div className="absolute inset-0 bg-black/60" />
                 <button
@@ -87,7 +114,7 @@ export default function LivePlayer() {
               />
             )}
 
-            {isPlaying && (
+            {STREAM_ENABLED && isPlaying && (
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-between opacity-0 hover:opacity-100 transition-opacity">
                 <div className="flex items-center gap-3">
                   <button
@@ -113,18 +140,6 @@ export default function LivePlayer() {
             )}
           </div>
         </div>
-
-        <p className="mt-3 text-center text-xs text-muted">
-          Stream not loading?{" "}
-          <a
-            href={youtubeWatchUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-fire-red-light hover:underline"
-          >
-            Open on YouTube
-          </a>
-        </p>
 
         {/* Support the Cam — primary CTA under the player */}
         <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
