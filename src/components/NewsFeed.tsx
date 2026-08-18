@@ -131,7 +131,6 @@ export default async function NewsFeed() {
               <PodcastEpisodeList
                 showName={podcast.showName}
                 episodes={podcast.episodes}
-                formatRelativeTime={formatRelativeTime}
               />
             </div>
           )}

@@ -3,18 +3,14 @@
 import { useRef } from "react";
 import { Headphones, ExternalLink } from "lucide-react";
 import type { PodcastEpisode } from "@/lib/podcast";
+import { formatRelativeTime } from "@/lib/news";
 
 type Props = {
   showName: string;
   episodes: PodcastEpisode[];
-  formatRelativeTime: (iso: string) => string;
 };
 
-export default function PodcastEpisodeList({
-  showName,
-  episodes,
-  formatRelativeTime,
-}: Props) {
+export default function PodcastEpisodeList({ showName, episodes }: Props) {
   const audioRefs = useRef<Map<string, HTMLAudioElement>>(new Map());
 
   function pauseOthers(exceptId: string) {
