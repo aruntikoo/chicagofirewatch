@@ -14,19 +14,13 @@ export default function LivePlayer() {
   // ---------------------------------------------------------------
   const STREAM_ENABLED = true;
 
-  // Channel ID: UCCpOx6W4-N2BhFRHdc1043w
-  // live_stream embed follows whatever is currently live on the channel
-  // (best for a long-running construction cam).
-  //
-  // If the embed fails, switch to a specific video id instead:
-  // const LIVE_VIDEO_ID = "xxxxxxxxxxx";
-  // const youtubeEmbedSrc = `https://www.youtube.com/embed/${LIVE_VIDEO_ID}?autoplay=1&mute=1&playsinline=1&rel=0`;
-  // const youtubeWatchUrl = `https://www.youtube.com/watch?v=${LIVE_VIDEO_ID}`;
+  // Specific live video id (more reliable than channel live_stream embed)
+  // Update when YouTube assigns a new id for a new stream session.
+  const LIVE_VIDEO_ID = "TNt3dpQsvLg";
+
+  const youtubeEmbedSrc = `https://www.youtube.com/embed/${LIVE_VIDEO_ID}?autoplay=1&mute=1&playsinline=1&rel=0`;
+  const youtubeWatchUrl = `https://www.youtube.com/watch?v=${LIVE_VIDEO_ID}`;
   // ---------------------------------------------------------------
-  const youtubeEmbedSrc =
-    "https://www.youtube.com/embed/live_stream?channel=UCCpOx6W4-N2BhFRHdc1043w&autoplay=1&mute=1&playsinline=1";
-  const youtubeWatchUrl =
-    "https://www.youtube.com/channel/UCCpOx6W4-N2BhFRHdc1043w/live";
 
   const supportUrl = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
 
