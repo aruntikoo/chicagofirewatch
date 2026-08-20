@@ -10,16 +10,23 @@ export default function LivePlayer() {
   const [muted, setMuted] = useState(true);
 
   // ---------------------------------------------------------------
-  // STREAM TOGGLE — set true when a real construction live is on
+  // STREAM TOGGLE — set false to show offline placeholder
   // ---------------------------------------------------------------
-  const STREAM_ENABLED = false;
+  const STREAM_ENABLED = true;
 
-  // From youtube.com/live/VIDEO_ID — update when you go live again
-  const LIVE_VIDEO_ID = "2hJ6S-VnbOg";
-
-  const youtubeEmbedSrc = `https://www.youtube.com/embed/${LIVE_VIDEO_ID}?autoplay=1&mute=1&playsinline=1&rel=0`;
-  const youtubeWatchUrl = `https://www.youtube.com/watch?v=${LIVE_VIDEO_ID}`;
+  // Channel ID: UCCpOx6W4-N2BhFRHdc1043w
+  // live_stream embed follows whatever is currently live on the channel
+  // (best for a long-running construction cam).
+  //
+  // If the embed fails, switch to a specific video id instead:
+  // const LIVE_VIDEO_ID = "xxxxxxxxxxx";
+  // const youtubeEmbedSrc = `https://www.youtube.com/embed/${LIVE_VIDEO_ID}?autoplay=1&mute=1&playsinline=1&rel=0`;
+  // const youtubeWatchUrl = `https://www.youtube.com/watch?v=${LIVE_VIDEO_ID}`;
   // ---------------------------------------------------------------
+  const youtubeEmbedSrc =
+    "https://www.youtube.com/embed/live_stream?channel=UCCpOx6W4-N2BhFRHdc1043w&autoplay=1&mute=1&playsinline=1";
+  const youtubeWatchUrl =
+    "https://www.youtube.com/channel/UCCpOx6W4-N2BhFRHdc1043w/live";
 
   const supportUrl = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
 
@@ -140,6 +147,20 @@ export default function LivePlayer() {
             )}
           </div>
         </div>
+
+        {STREAM_ENABLED && (
+          <p className="mt-3 text-center text-xs text-muted">
+            Stream not loading?{" "}
+            <a
+              href={youtubeWatchUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-fire-red-light hover:underline"
+            >
+              Open on YouTube
+            </a>
+          </p>
+        )}
 
         {/* Support the Cam — primary CTA under the player */}
         <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
