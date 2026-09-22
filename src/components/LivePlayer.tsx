@@ -16,7 +16,7 @@ export default function LivePlayer() {
 
   // Specific live video id (more reliable than channel live_stream embed)
   // Update when YouTube assigns a new id for a new stream session.
-  const LIVE_VIDEO_ID = "TNt3dpQsvLg";
+  const LIVE_VIDEO_ID = "gVuIkGDm2m0";
 
   const youtubeEmbedSrc = `https://www.youtube.com/embed/${LIVE_VIDEO_ID}?autoplay=1&mute=1&playsinline=1&rel=0`;
   const youtubeWatchUrl = `https://www.youtube.com/watch?v=${LIVE_VIDEO_ID}`;
