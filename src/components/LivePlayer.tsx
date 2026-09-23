@@ -18,7 +18,7 @@ export default function LivePlayer() {
   // Update when YouTube assigns a new id for a new stream session.
   const LIVE_VIDEO_ID = "gVuIkGDm2m0";
 
-  const youtubeEmbedSrc = `https://www.youtube.com/embed/${LIVE_VIDEO_ID}?autoplay=1&mute=1&playsinline=1&rel=0`;
+  const youtubeEmbedSrc = `https://www.youtube.com/embed/${LIVE_VIDEO_ID}?autoplay=1&mute=1&playsinline=1&rel=0&origin=${encodeURIComponent("https://www.chicagofirewatch.com")}`;
   const youtubeWatchUrl = `https://www.youtube.com/watch?v=${LIVE_VIDEO_ID}`;
   // ---------------------------------------------------------------
 
@@ -110,7 +110,7 @@ export default function LivePlayer() {
                 src={youtubeEmbedSrc}
                 title="Chicago Fire Stadium Live Construction"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="origin-when-cross-origin"
+                referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
               />
             )}
