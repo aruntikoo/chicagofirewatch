@@ -1,28 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Play, Maximize, Volume2, VolumeX, Heart } from "lucide-react";
 import Link from "next/link";
 import PresenceCounter from "./PresenceCounter";
 
+const YOUTUBE_CHANNEL_ID = "UCCpOx6W4-N2BhFRHdc1043w";
+const SUPPORT_URL = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
+const REPLAY_URL = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`;
+
+function chicagoHour(): number {
+  const hourText = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Chicago",
+    hour: "numeric",
+    hourCycle: "h23",
+  }).format(new Date());
+  return parseInt(hourText, 10);
+}
+
+function isLiveWindowNow(): boolean {
+  const hour = chicagoHour();
+  return hour >= 7 && hour < 18;
+}
+
 export default function LivePlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
+  const [inLiveWindow, setInLiveWindow] = useState(true);
 
-  // ---------------------------------------------------------------
-  // STREAM TOGGLE — set false to show offline placeholder
-  // ---------------------------------------------------------------
+  // Manual kill switch — set false to force the offline card.
   const STREAM_ENABLED = true;
 
-  // Channel live embed follows whatever YouTube ID is live today.
-  // Do not hardcode a video id — 6pm stop / 7am start mints a new one.
-  const YOUTUBE_CHANNEL_ID = "UCCpOx6W4-N2BhFRHdc1043w";
+  useEffect(() => {
+    const tick = () => setInLiveWindow(isLiveWindowNow());
+    tick();
+    const id = window.setInterval(tick, 60_000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  const showLive = STREAM_ENABLED && inLiveWindow;
 
   const youtubeEmbedSrc = `https://www.youtube.com/embed/live_stream?channel=${YOUTUBE_CHANNEL_ID}&autoplay=1&mute=1&playsinline=1&rel=0&origin=${encodeURIComponent("https://www.chicagofirewatch.com")}`;
   const youtubeWatchUrl = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/live`;
-  // ---------------------------------------------------------------
-
-  const supportUrl = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
 
   return (
     <section id="live" className="relative w-full">
@@ -31,7 +50,7 @@ export default function LivePlayer() {
           <div>
             <div className="flex flex-wrap items-center gap-3 mb-2">
               <div className="flex items-center gap-2">
-                {STREAM_ENABLED ? (
+                {showLive ? (
                   <>
                     <span className="w-2.5 h-2.5 rounded-full bg-fire-red live-badge" />
                     <span className="text-sm font-semibold uppercase tracking-widest text-fire-red-light">
@@ -47,7 +66,7 @@ export default function LivePlayer() {
                   </>
                 )}
               </div>
-              {STREAM_ENABLED && <PresenceCounter />}
+              {showLive && <PresenceCounter />}
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-warm-white">
               Chicago Fire Stadium
@@ -64,26 +83,38 @@ export default function LivePlayer() {
 
         <div className="relative steel-border rounded-xl overflow-hidden bg-black shadow-2xl">
           <div className="aspect-video relative bg-gradient-to-br from-charcoal to-black">
-            {!STREAM_ENABLED ? (
+            {!showLive ? (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-[url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=80')] bg-cover bg-center">
                 <div className="absolute inset-0 bg-black/70" />
-                <div className="relative z-10 flex flex-col items-center gap-3 px-6 text-center max-w-md">
+                <div className="relative z-10 flex flex-col items-center gap-3 px-6 text-center max-w-lg">
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted">
-                    Stream offline
+                    Cam offline
                   </p>
-                  <p className="text-xl sm:text-2xl font-bold text-warm-white">
-                    Live cam coming soon
+                  <p className="text-2xl sm:text-3xl font-bold text-warm-white">
+                    Back at 7:00 AM Central
                   </p>
                   <p className="text-sm text-warm-white/75">
-                    We're setting up the permanent view of The 78. Join the
-                    watch list below to get notified when we go live.
+                    Live view runs 7:00 AM–6:00 PM CT while crews are on site.
                   </p>
-                  <a
-                    href="#community"
-                    className="mt-2 inline-flex items-center px-5 py-2.5 rounded-lg bg-fire-red hover:bg-fire-red-light text-white text-sm font-semibold transition-colors"
-                  >
-                    Get notified
-                  </a>
+                  <div className="mt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <a
+                      href={REPLAY_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-5 py-2.5 rounded-lg border border-white/25 bg-black/40 hover:bg-black/60 text-warm-white text-sm font-semibold transition-colors"
+                    >
+                      Watch yesterday's replay
+                    </a>
+                    <a
+                      href={SUPPORT_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-fire-red hover:bg-fire-red-light text-white text-sm font-semibold transition-colors"
+                    >
+                      <Heart className="w-4 h-4 fill-current" />
+                      Support the Cam
+                    </a>
+                  </div>
                 </div>
               </div>
             ) : !isPlaying ? (
@@ -115,7 +146,7 @@ export default function LivePlayer() {
               />
             )}
 
-            {STREAM_ENABLED && isPlaying && (
+            {showLive && isPlaying && (
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-between opacity-0 hover:opacity-100 transition-opacity">
                 <div className="flex items-center gap-3">
                   <button
@@ -142,7 +173,7 @@ export default function LivePlayer() {
           </div>
         </div>
 
-        {STREAM_ENABLED && (
+        {showLive && (
           <p className="mt-3 text-center text-xs text-muted">
             Stream not loading?{" "}
             <a
@@ -156,10 +187,9 @@ export default function LivePlayer() {
           </p>
         )}
 
-        {/* Support the Cam — primary CTA under the player */}
         <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
           <a
-            href={supportUrl}
+            href={SUPPORT_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-fire-red hover:bg-fire-red-light text-white font-semibold text-sm sm:text-base shadow-lg shadow-fire-red/30 transition-colors"
@@ -172,7 +202,6 @@ export default function LivePlayer() {
           </p>
         </div>
 
-        {/* Sponsor placeholder under player */}
         <div className="mt-6">
           <p className="text-[10px] uppercase tracking-widest text-muted/70 text-center mb-2">
             Advertisement
