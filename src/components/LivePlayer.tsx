@@ -14,12 +14,12 @@ export default function LivePlayer() {
   // ---------------------------------------------------------------
   const STREAM_ENABLED = true;
 
-  // Specific live video id (more reliable than channel live_stream embed)
-  // Update when YouTube assigns a new id for a new stream session.
-  const LIVE_VIDEO_ID = "gVuIkGDm2m0";
+  // Channel live embed follows whatever YouTube ID is live today.
+  // Do not hardcode a video id — 6pm stop / 7am start mints a new one.
+  const YOUTUBE_CHANNEL_ID = "UCCpOx6W4-N2BhFRHdc1043w";
 
-  const youtubeEmbedSrc = `https://www.youtube.com/embed/${LIVE_VIDEO_ID}?autoplay=1&mute=1&playsinline=1&rel=0&origin=${encodeURIComponent("https://www.chicagofirewatch.com")}`;
-  const youtubeWatchUrl = `https://www.youtube.com/watch?v=${LIVE_VIDEO_ID}`;
+  const youtubeEmbedSrc = `https://www.youtube.com/embed/live_stream?channel=${YOUTUBE_CHANNEL_ID}&autoplay=1&mute=1&playsinline=1&rel=0&origin=${encodeURIComponent("https://www.chicagofirewatch.com")}`;
+  const youtubeWatchUrl = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/live`;
   // ---------------------------------------------------------------
 
   const supportUrl = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
