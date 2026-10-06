@@ -8,6 +8,7 @@ import PresenceCounter from "./PresenceCounter";
 const YOUTUBE_CHANNEL_ID = "UCCpOx6W4-N2BhFRHdc1043w";
 const SUPPORT_URL = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
 const REPLAY_URL = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`;
+const COMED_OUTAGE_DATE = "2026-10-06";
 
 function chicagoHour(): number {
   const hourText = new Intl.DateTimeFormat("en-US", {
@@ -18,27 +19,44 @@ function chicagoHour(): number {
   return parseInt(hourText, 10);
 }
 
+function chicagoDateKey(): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Chicago",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+}
+
 function isLiveWindowNow(): boolean {
   const hour = chicagoHour();
   return hour >= 7 && hour < 18;
 }
 
+function isComedOutageDay(): boolean {
+  return chicagoDateKey() === COMED_OUTAGE_DATE;
+}
+
 export default function LivePlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
-  const [inLiveWindow, setInLiveWindow] = useState(true);
+  const [inLiveWindow, setInLiveWindow] = useState(isLiveWindowNow);
+  const [comedOutage, setComedOutage] = useState(isComedOutageDay);
 
   // Manual kill switch — set false to force the offline card.
   const STREAM_ENABLED = true;
 
   useEffect(() => {
-    const tick = () => setInLiveWindow(isLiveWindowNow());
+    const tick = () => {
+      setInLiveWindow(isLiveWindowNow());
+      setComedOutage(isComedOutageDay());
+    };
     tick();
     const id = window.setInterval(tick, 60_000);
     return () => window.clearInterval(id);
   }, []);
 
-  const showLive = STREAM_ENABLED && inLiveWindow;
+  const showLive = STREAM_ENABLED && inLiveWindow && !comedOutage;
 
   const youtubeEmbedSrc = `https://www.youtube.com/embed/live_stream?channel=${YOUTUBE_CHANNEL_ID}&autoplay=1&mute=1&playsinline=1&rel=0&origin=${encodeURIComponent("https://www.chicagofirewatch.com")}`;
   const youtubeWatchUrl = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/live`;
@@ -90,12 +108,26 @@ export default function LivePlayer() {
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted">
                     Cam offline
                   </p>
-                  <p className="text-2xl sm:text-3xl font-bold text-warm-white">
-                    Back at 7:00 AM Central
-                  </p>
-                  <p className="text-sm text-warm-white/75">
-                    Live view runs 7:00 AM–6:00 PM CT while crews are on site.
-                  </p>
+                  {comedOutage ? (
+                    <>
+                      <p className="text-2xl sm:text-3xl font-bold text-warm-white">
+                        Power’s out. Cam’s out.
+                      </p>
+                      <p className="text-sm text-warm-white/75">
+                        Building power is off from 10:00 a.m. today for ComEd
+                        equipment repairs. Back tomorrow at 7:00 a.m. Central.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-2xl sm:text-3xl font-bold text-warm-white">
+                        Back at 7:00 AM Central
+                      </p>
+                      <p className="text-sm text-warm-white/75">
+                        Live view runs 7:00 AM–6:00 PM CT while crews are on site.
+                      </p>
+                    </>
+                  )}
                   <div className="mt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
                     <a
                       href={REPLAY_URL}
