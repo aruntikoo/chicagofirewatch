@@ -9,6 +9,7 @@ const YOUTUBE_CHANNEL_ID = "UCCpOx6W4-N2BhFRHdc1043w";
 const SUPPORT_URL = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
 const REPLAY_URL = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`;
 const COMED_OUTAGE_DATE = "2026-10-06";
+const COMED_OUTAGE_START_MINUTES = 9 * 60 + 55;
 
 function chicagoHour(): number {
   const hourText = new Intl.DateTimeFormat("en-US", {
@@ -19,13 +20,21 @@ function chicagoHour(): number {
   return parseInt(hourText, 10);
 }
 
-function chicagoDateKey(): string {
-  return new Intl.DateTimeFormat("en-CA", {
+function chicagoNow(): { date: string; minutes: number } {
+  const parts = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/Chicago",
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-  }).format(new Date());
+    hour: "numeric",
+    minute: "numeric",
+    hourCycle: "h23",
+  }).formatToParts(new Date());
+  const get = (type: string) => parts.find((part) => part.type === type)?.value ?? "";
+  return {
+    date: `${get("year")}-${get("month")}-${get("day")}`,
+    minutes: parseInt(get("hour"), 10) * 60 + parseInt(get("minute"), 10),
+  };
 }
 
 function isLiveWindowNow(): boolean {
@@ -33,15 +42,16 @@ function isLiveWindowNow(): boolean {
   return hour >= 7 && hour < 18;
 }
 
-function isComedOutageDay(): boolean {
-  return chicagoDateKey() === COMED_OUTAGE_DATE;
+function isComedOutageNow(): boolean {
+  const { date, minutes } = chicagoNow();
+  return date === COMED_OUTAGE_DATE && minutes >= COMED_OUTAGE_START_MINUTES;
 }
 
 export default function LivePlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
   const [inLiveWindow, setInLiveWindow] = useState(isLiveWindowNow);
-  const [comedOutage, setComedOutage] = useState(isComedOutageDay);
+  const [comedOutage, setComedOutage] = useState(isComedOutageNow);
 
   // Manual kill switch — set false to force the offline card.
   const STREAM_ENABLED = true;
@@ -49,10 +59,10 @@ export default function LivePlayer() {
   useEffect(() => {
     const tick = () => {
       setInLiveWindow(isLiveWindowNow());
-      setComedOutage(isComedOutageDay());
+      setComedOutage(isComedOutageNow());
     };
     tick();
-    const id = window.setInterval(tick, 60_000);
+    const id = window.setInterval(tick, 15_000);
     return () => window.clearInterval(id);
   }, []);
 
