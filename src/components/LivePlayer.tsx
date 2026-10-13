@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Play, Maximize, Volume2, VolumeX, Heart } from "lucide-react";
-import Link from "next/link";
 import PresenceCounter from "./PresenceCounter";
+import RecruitingCrmBanner from "./RecruitingCrmBanner";
 
 const YOUTUBE_CHANNEL_ID = "UCCpOx6W4-N2BhFRHdc1043w";
 const SUPPORT_URL = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
@@ -244,24 +244,7 @@ export default function LivePlayer() {
           </p>
         </div>
 
-        <div className="mt-6">
-          <p className="text-[10px] uppercase tracking-widest text-muted/70 text-center mb-2">
-            Advertisement
-          </p>
-          <Link
-            href="/sponsor"
-            className="group block w-full rounded-lg border border-dashed border-fire-red/35 bg-charcoal/70 hover:border-fire-red/55 hover:bg-charcoal/90 transition-colors"
-          >
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 px-6 py-7 sm:py-8 min-h-[96px] sm:min-h-[100px]">
-              <span className="text-warm-white font-medium text-base sm:text-lg text-center">
-                Sponsor this live cam — Reach Chicago Fire fans
-              </span>
-              <span className="text-fire-red-light text-sm sm:text-base font-semibold group-hover:underline whitespace-nowrap">
-                Learn more →
-              </span>
-            </div>
-          </Link>
-        </div>
+        <RecruitingCrmBanner />
       </div>
     </section>
   );
