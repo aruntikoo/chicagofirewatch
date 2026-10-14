@@ -3,6 +3,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SponsorInterestForm from "@/components/SponsorInterestForm";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { SPONSORSHIPS_ENABLED } from "@/lib/features";
 
 export const metadata: Metadata = {
   title: "Sponsor | Chicago Fire Watch",
@@ -38,6 +40,7 @@ const tiers = [
 ];
 
 export default function SponsorPage() {
+  if (!SPONSORSHIPS_ENABLED) redirect("/"); // hidden until the site is on a paid Vercel plan
   return (
     <>
       <Header />

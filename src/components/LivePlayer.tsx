@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Play, Maximize, Volume2, VolumeX, Heart } from "lucide-react";
 import PresenceCounter from "./PresenceCounter";
 import RecruitingCrmBanner from "./RecruitingCrmBanner";
+import SponsorBanner from "./SponsorBanner";
+import { SPONSORSHIPS_ENABLED } from "@/lib/features";
 
 const YOUTUBE_CHANNEL_ID = "UCCpOx6W4-N2BhFRHdc1043w";
 const SUPPORT_URL = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
@@ -244,7 +246,7 @@ export default function LivePlayer() {
           </p>
         </div>
 
-        <RecruitingCrmBanner />
+        {SPONSORSHIPS_ENABLED ? <SponsorBanner /> : <RecruitingCrmBanner />}
       </div>
     </section>
   );

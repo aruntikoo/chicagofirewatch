@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SPONSORSHIPS_ENABLED } from "@/lib/features";
 import EmailSignup from "@/components/EmailSignup";
 import ViewerPoll from "@/components/ViewerPoll";
 import PastPolls from "@/components/PastPolls";
@@ -50,11 +51,13 @@ export default function CommunityShop() {
               Support the Watch
             </h2>
             <p className="text-sm text-muted max-w-xl mx-auto">
-              Tips, merch partners, and sponsorships keep the live view running.
+              {SPONSORSHIPS_ENABLED
+                ? "Tips, merch partners, and sponsorships keep the live view running."
+                : "Tips and merch partners keep the live view running."}
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className={`mx-auto grid grid-cols-1 gap-4 ${SPONSORSHIPS_ENABLED ? "max-w-3xl sm:grid-cols-3" : "max-w-xl sm:grid-cols-2"}`}>
             <div className="steel-border rounded-xl bg-charcoal/90 p-5 text-center hover:border-fire-red/40 transition-colors flex flex-col">
               <h3 className="text-base font-bold text-warm-white mb-1.5">
                 Merch
@@ -87,20 +90,22 @@ export default function CommunityShop() {
               </a>
             </div>
 
-            <div className="steel-border rounded-xl bg-charcoal/90 p-5 text-center hover:border-fire-red/40 transition-colors flex flex-col">
-              <h3 className="text-base font-bold text-warm-white mb-1.5">
-                Sponsor
-              </h3>
-              <p className="text-xs text-muted mb-4 flex-1">
-                Local brands and build partners.
-              </p>
-              <Link
-                href="/sponsor"
-                className="inline-block px-3 py-2 rounded-lg border border-fire-red/40 text-fire-red-light hover:bg-fire-red/10 text-xs font-medium transition-colors"
-              >
-                Get in touch
-              </Link>
-            </div>
+            {SPONSORSHIPS_ENABLED && (
+              <div className="steel-border rounded-xl bg-charcoal/90 p-5 text-center hover:border-fire-red/40 transition-colors flex flex-col">
+                <h3 className="text-base font-bold text-warm-white mb-1.5">
+                  Sponsor
+                </h3>
+                <p className="text-xs text-muted mb-4 flex-1">
+                  Local brands and build partners.
+                </p>
+                <Link
+                  href="/sponsor"
+                  className="inline-block px-3 py-2 rounded-lg border border-fire-red/40 text-fire-red-light hover:bg-fire-red/10 text-xs font-medium transition-colors"
+                >
+                  Get in touch
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </section>

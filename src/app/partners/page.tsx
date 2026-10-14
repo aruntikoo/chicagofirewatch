@@ -1,3 +1,4 @@
+import { SPONSORSHIPS_ENABLED } from "@/lib/features";
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -168,12 +169,14 @@ export default function PartnersPage() {
         </section>
 
         <section className="py-8 text-center space-y-3">
-          <p className="text-sm text-muted">
-            Looking for ad sponsorship instead?{" "}
-            <Link href="/sponsor" className="text-fire-red-light hover:underline">
-              See sponsorship options
-            </Link>
-          </p>
+          {SPONSORSHIPS_ENABLED && (
+            <p className="text-sm text-muted">
+              Looking for ad sponsorship instead?{" "}
+              <Link href="/sponsor" className="text-fire-red-light hover:underline">
+                See sponsorship options
+              </Link>
+            </p>
+          )}
           <Link href="/" className="block text-sm text-fire-red-light hover:underline">
             ← Back to the live cam
           </Link>

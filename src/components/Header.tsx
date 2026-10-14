@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { Menu, X, Flame } from "lucide-react";
 import Link from "next/link";
+import { SPONSORSHIPS_ENABLED } from "@/lib/features";
 
-const navItems = [
+const allNavItems = [
   { name: "Live", href: "/#live" },
   { name: "Timeline", href: "/#timeline" },
   { name: "Gallery", href: "/#gallery" },
@@ -13,6 +14,7 @@ const navItems = [
   { name: "Sponsor", href: "/sponsor" },
   { name: "About", href: "/#about" },
 ];
+const navItems = allNavItems.filter((item) => SPONSORSHIPS_ENABLED || item.href !== "/sponsor");
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);

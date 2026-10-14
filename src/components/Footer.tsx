@@ -1,5 +1,6 @@
 import { Flame, Instagram, Youtube } from "lucide-react";
 import Link from "next/link";
+import { SPONSORSHIPS_ENABLED } from "@/lib/features";
 
 function XIcon({ size = 16, className = "" }: { size?: number; className?: string }) {
   return (
@@ -67,11 +68,13 @@ export default function Footer() {
                   Community
                 </Link>
               </li>
-              <li>
-                <Link href="/sponsor" className="hover:text-fire-red-light transition-colors">
-                  Sponsor
-                </Link>
-              </li>
+              {SPONSORSHIPS_ENABLED && (
+                <li>
+                  <Link href="/sponsor" className="hover:text-fire-red-light transition-colors">
+                    Sponsor
+                  </Link>
+                </li>
+              )}
               <li>
                 <Link href="/partners" className="hover:text-fire-red-light transition-colors">
                   Retail partners
