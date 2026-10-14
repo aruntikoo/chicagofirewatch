@@ -8,3 +8,10 @@
 //                form, rates, nav/footer links, the Sponsor card and the "Sponsor this live cam"
 //                banner all come back; the Recruiting CRM banner is replaced by it.
 export const SPONSORSHIPS_ENABLED = false;
+
+// PARTNERS_ENABLED
+//   false (now): the /partners page redirects home, /api/partners answers 404, and the "Retail partners"
+//                footer link and the Merch "Partner with us" card are hidden. That page offers paid
+//                banner and affiliate placements, which counts as commercial use on the free Hobby plan.
+//   true:        turn this on only after the site moves to a paid Vercel plan (Pro).
+export const PARTNERS_ENABLED = false;

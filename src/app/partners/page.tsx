@@ -1,4 +1,5 @@
-import { SPONSORSHIPS_ENABLED } from "@/lib/features";
+import { redirect } from "next/navigation";
+import { PARTNERS_ENABLED, SPONSORSHIPS_ENABLED } from "@/lib/features";
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -27,6 +28,7 @@ const options = [
 ];
 
 export default function PartnersPage() {
+  if (!PARTNERS_ENABLED) redirect("/"); // hidden until the site is on a paid Vercel plan
   return (
     <>
       <Header />

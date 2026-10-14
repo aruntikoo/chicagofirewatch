@@ -1,11 +1,27 @@
 import Link from "next/link";
-import { SPONSORSHIPS_ENABLED } from "@/lib/features";
+import { PARTNERS_ENABLED, SPONSORSHIPS_ENABLED } from "@/lib/features";
 import EmailSignup from "@/components/EmailSignup";
 import ViewerPoll from "@/components/ViewerPoll";
 import PastPolls from "@/components/PastPolls";
 
 export default function CommunityShop() {
   const supportUrl = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
+
+  // Which support cards show depends on the switches in src/lib/features.ts. Donate is always there.
+  const kinds = [
+    "Tips",
+    ...(PARTNERS_ENABLED ? ["merch partners"] : []),
+    ...(SPONSORSHIPS_ENABLED ? ["sponsorships"] : []),
+  ];
+  const kindsText =
+    kinds.length === 1
+      ? kinds[0]
+      : kinds.length === 2
+        ? kinds.join(" and ")
+        : `${kinds.slice(0, -1).join(", ")}, and ${kinds[kinds.length - 1]}`;
+  const cardCount = kinds.length;
+  const gridClass =
+    cardCount === 1 ? "max-w-xs" : cardCount === 2 ? "max-w-xl sm:grid-cols-2" : "max-w-3xl sm:grid-cols-3";
 
   return (
     <>
@@ -51,27 +67,27 @@ export default function CommunityShop() {
               Support the Watch
             </h2>
             <p className="text-sm text-muted max-w-xl mx-auto">
-              {SPONSORSHIPS_ENABLED
-                ? "Tips, merch partners, and sponsorships keep the live view running."
-                : "Tips and merch partners keep the live view running."}
+              {kindsText} keep the live view running.
             </p>
           </div>
 
-          <div className={`mx-auto grid grid-cols-1 gap-4 ${SPONSORSHIPS_ENABLED ? "max-w-3xl sm:grid-cols-3" : "max-w-xl sm:grid-cols-2"}`}>
-            <div className="steel-border rounded-xl bg-charcoal/90 p-5 text-center hover:border-fire-red/40 transition-colors flex flex-col">
-              <h3 className="text-base font-bold text-warm-white mb-1.5">
-                Merch
-              </h3>
-              <p className="text-xs text-muted mb-4 flex-1">
-                Retail partners: reach Fire fans here.
-              </p>
-              <Link
-                href="/partners"
-                className="inline-block px-3 py-2 rounded-lg border border-fire-red/40 text-fire-red-light hover:bg-fire-red/10 text-xs font-medium transition-colors"
-              >
-                Partner with us
-              </Link>
-            </div>
+          <div className={`mx-auto grid grid-cols-1 gap-4 ${gridClass}`}>
+            {PARTNERS_ENABLED && (
+              <div className="steel-border rounded-xl bg-charcoal/90 p-5 text-center hover:border-fire-red/40 transition-colors flex flex-col">
+                <h3 className="text-base font-bold text-warm-white mb-1.5">
+                  Merch
+                </h3>
+                <p className="text-xs text-muted mb-4 flex-1">
+                  Retail partners: reach Fire fans here.
+                </p>
+                <Link
+                  href="/partners"
+                  className="inline-block px-3 py-2 rounded-lg border border-fire-red/40 text-fire-red-light hover:bg-fire-red/10 text-xs font-medium transition-colors"
+                >
+                  Partner with us
+                </Link>
+              </div>
+            )}
 
             <div className="steel-border rounded-xl bg-charcoal/90 p-5 text-center hover:border-fire-red/40 transition-colors flex flex-col">
               <h3 className="text-base font-bold text-warm-white mb-1.5">

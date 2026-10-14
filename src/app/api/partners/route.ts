@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { PARTNERS_ENABLED } from "@/lib/features";
 
 const TO_EMAIL = process.env.SPONSOR_TO_EMAIL || "arun.tikoo@gmail.com";
 const FROM_EMAIL =
@@ -19,6 +20,7 @@ type PartnerBody = {
 };
 
 export async function POST(request: Request) {
+  if (!PARTNERS_ENABLED) return NextResponse.json({ error: "Not found" }, { status: 404 });
   let body: PartnerBody;
 
   try {
