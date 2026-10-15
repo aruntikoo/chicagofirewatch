@@ -1,10 +1,10 @@
-// Promo banner for Recruiting CRM, a separate project by the same maker.
-// utm_source=chicagofirewatch tags every waitlist sign-up that comes from this banner,
-// so the Waitlist tab in the Recruiting CRM admin shows how many came from here.
-// The waitlist is free. Do not add prices or payment language here (Vercel Hobby plan terms).
-
+// Promo banner for the maker's other product (myRecruitingBoard).
+// The waitlist is free: do not add prices or payment language here.
+// TODO: when myrecruitingboard.com is live, change WAITLIST_URL's host to it.
 const WAITLIST_URL =
   "https://recruiting-crm-seven.vercel.app/?waitlist=1&utm_source=chicagofirewatch&utm_medium=banner";
+
+const FADE = "linear-gradient(90deg, transparent 0%, #000 35%)";
 
 export default function RecruitingCrmBanner() {
   return (
@@ -16,16 +16,26 @@ export default function RecruitingCrmBanner() {
         href={WAITLIST_URL}
         target="_blank"
         rel="noopener"
-        className="group block w-full rounded-lg border border-fire-red/40 bg-charcoal/80 hover:border-fire-red/70 hover:bg-charcoal transition-colors"
+        className="group relative block w-full overflow-hidden rounded-lg border border-fire-red/40 bg-charcoal hover:border-fire-red/70 transition-colors"
       >
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 px-6 py-6 min-h-[96px] sm:min-h-[100px]">
+        {/* Photo: right 65% on desktop (ball sits between text and button), full width and dimmed on phones */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-y-0 right-0 w-full opacity-40 sm:w-[65%] sm:opacity-100 bg-cover bg-center"
+          style={{
+            backgroundImage: "url(/images/banner-kick.webp)",
+            WebkitMaskImage: FADE,
+            maskImage: FADE,
+          }}
+        />
+        <div className="relative flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 px-6 py-6 min-h-[96px] sm:min-h-[100px]">
           <div className="text-center sm:text-left">
             <p className="text-warm-white font-semibold text-base sm:text-lg leading-snug">
               Know a high school athlete chasing a college roster spot?
             </p>
-            <p className="text-muted text-sm mt-1">
-              <span className="text-warm-white/90 font-medium">Recruiting CRM</span>{" "}
-              helps families track schools, coaches and deadlines. Free early access.
+            <p className="text-warm-white/75 text-sm mt-1">
+              <span className="text-warm-white font-medium">myRecruitingBoard</span>{" "}
+              helps families track schools, programs, and communication with coaches.
             </p>
           </div>
           <span className="inline-flex items-center gap-1 px-5 py-2.5 rounded-lg bg-fire-red group-hover:bg-fire-red-light text-white text-sm font-semibold whitespace-nowrap shadow-lg shadow-fire-red/25 transition-colors">
