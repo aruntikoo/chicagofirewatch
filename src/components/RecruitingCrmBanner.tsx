@@ -4,7 +4,7 @@
 const WAITLIST_URL =
   "https://recruiting-crm-seven.vercel.app/?waitlist=1&utm_source=chicagofirewatch&utm_medium=banner";
 
-const FADE = "linear-gradient(90deg, transparent 0%, #000 35%)";
+const FADE = "linear-gradient(90deg, transparent 0%, #000 30%)";
 
 export default function RecruitingCrmBanner() {
   return (
@@ -18,19 +18,19 @@ export default function RecruitingCrmBanner() {
         rel="noopener"
         className="group relative block w-full overflow-hidden rounded-lg border border-fire-red/40 bg-charcoal hover:border-fire-red/70 transition-colors"
       >
-        {/* Photo: right 65% on desktop (ball sits between text and button), full width and dimmed on phones */}
+        {/* Photo: 350px wide on the right at desktop (shows both legs, glove and ball), full width and dimmed on phones */}
         <div
           aria-hidden="true"
-          className="absolute inset-y-0 right-0 w-full opacity-40 sm:w-[65%] sm:opacity-100 bg-cover bg-center"
+          className="absolute inset-y-0 right-0 w-full opacity-40 sm:w-[350px] sm:opacity-100 bg-cover bg-[position:80%_center] sm:bg-center"
           style={{
-            backgroundImage: "url(/images/banner-kick.webp)",
+            backgroundImage: "url(/images/banner-kick-tall.webp)",
             WebkitMaskImage: FADE,
             maskImage: FADE,
           }}
         />
-        <div className="relative flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 px-6 py-6 min-h-[96px] sm:min-h-[100px]">
+        <div className="relative flex flex-col items-center sm:items-start justify-center gap-3 px-6 py-6 sm:pl-8 sm:pr-6 min-h-[280px] sm:h-[240px] sm:min-h-0 sm:w-[56%]">
           <div className="text-center sm:text-left">
-            <p className="text-warm-white font-semibold text-base sm:text-lg leading-snug">
+            <p className="text-warm-white font-semibold text-lg sm:text-xl leading-snug">
               Know a high school athlete chasing a college roster spot?
             </p>
             <p className="text-warm-white/75 text-sm mt-1">
