@@ -20,7 +20,7 @@ function XIcon({ size = 16, className = "" }: { size?: number; className?: strin
 export default function Footer() {
   return (
     <footer className="bg-charcoal border-t border-fire-red/20 pt-12 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">

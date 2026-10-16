@@ -70,7 +70,7 @@ export default async function NewsFeed() {
 
   return (
     <section id="news" className="relative w-full border-t border-fire-red/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-8 md:py-10">
         <div
           className={
             hasNews && hasPodcast

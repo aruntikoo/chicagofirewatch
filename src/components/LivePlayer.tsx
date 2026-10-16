@@ -75,7 +75,7 @@ export default function LivePlayer() {
 
   return (
     <section id="live" className="relative w-full">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
           <div>
             <div className="flex flex-wrap items-center gap-3 mb-2">

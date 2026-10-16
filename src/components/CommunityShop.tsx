@@ -26,7 +26,7 @@ export default function CommunityShop() {
   return (
     <>
       <section id="community" className="pt-16 md:pt-20 pb-8 md:pb-10 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h2 className="text-3xl sm:text-4xl font-bold text-warm-white mb-3">
               Community
@@ -61,7 +61,7 @@ export default function CommunityShop() {
       </section>
 
       <section id="shop" className="pt-8 md:pt-10 pb-16 md:pb-20 brick-texture">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-6">
             <h2 className="text-2xl sm:text-3xl font-bold text-warm-white mb-2">
               Support the Watch

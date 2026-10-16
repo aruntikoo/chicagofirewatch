@@ -4,7 +4,7 @@
 const WAITLIST_URL =
   "https://recruiting-crm-seven.vercel.app/?waitlist=1&utm_source=chicagofirewatch&utm_medium=banner";
 
-const FADE = "linear-gradient(90deg, transparent 0%, #000 30%)";
+const FADE = "linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.55) 35%, #000 75%)";
 
 export default function RecruitingCrmBanner() {
   return (
@@ -18,27 +18,27 @@ export default function RecruitingCrmBanner() {
         rel="noopener"
         className="group relative block w-full overflow-hidden rounded-lg border border-fire-red/40 bg-charcoal hover:border-fire-red/70 transition-colors"
       >
-        {/* Photo: 350px wide on the right at desktop (shows both legs, glove and ball), full width and dimmed on phones */}
+        {/* Photo: at least 420px wide on the right at desktop, fading in from its left edge under the text (shows both legs, glove and ball), full width and dimmed on phones */}
         <div
           aria-hidden="true"
-          className="absolute inset-y-0 right-0 w-full opacity-40 sm:w-[350px] sm:opacity-100 bg-cover bg-[position:80%_center] sm:bg-center"
+          className="absolute inset-y-0 right-0 w-full opacity-40 sm:w-[max(420px,42%)] sm:opacity-100 bg-cover bg-[position:80%_center] sm:bg-[position:70%_60%]"
           style={{
             backgroundImage: "url(/images/banner-kick-tall.webp)",
             WebkitMaskImage: FADE,
             maskImage: FADE,
           }}
         />
-        <div className="relative flex flex-col items-center sm:items-start justify-center gap-3 px-6 py-6 sm:pl-8 sm:pr-6 min-h-[280px] sm:h-[240px] sm:min-h-0 sm:w-[56%]">
+        <div className="relative flex flex-col items-center sm:items-start justify-center gap-3 px-6 py-6 sm:pl-8 sm:pr-6 min-h-[280px] sm:h-[240px] sm:min-h-0 sm:w-[62%]">
           <div className="text-center sm:text-left">
-            <p className="text-warm-white font-semibold text-lg sm:text-xl leading-snug">
+            <p className="text-warm-white font-semibold text-xl sm:text-2xl leading-snug">
               Know a high school athlete chasing a college roster spot?
             </p>
-            <p className="text-warm-white/75 text-sm mt-1">
+            <p className="text-warm-white/80 text-base mt-1.5">
               <span className="text-warm-white font-medium">myRecruitingBoard</span>{" "}
               helps families track schools, programs, and communication with coaches.
             </p>
           </div>
-          <span className="inline-flex items-center gap-1 px-5 py-2.5 rounded-lg bg-fire-red group-hover:bg-fire-red-light text-white text-sm font-semibold whitespace-nowrap shadow-lg shadow-fire-red/25 transition-colors">
+          <span className="inline-flex items-center gap-1 px-6 py-3 rounded-lg bg-fire-red group-hover:bg-fire-red-light text-white text-base font-semibold whitespace-nowrap shadow-lg shadow-fire-red/25 transition-colors">
             Join the waitlist <span aria-hidden="true">→</span>
           </span>
         </div>
