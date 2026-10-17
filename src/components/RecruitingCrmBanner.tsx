@@ -1,10 +1,9 @@
 // Promo banner for the maker's other product (myRecruitingBoard).
 // The waitlist is free: do not add prices or payment language here.
-// TODO: when myrecruitingboard.com is live, change WAITLIST_URL's host to it.
 import type { CSSProperties } from "react";
 
 const WAITLIST_URL =
-  "https://recruiting-crm-seven.vercel.app/?waitlist=1&utm_source=chicagofirewatch&utm_medium=banner";
+  "https://myrecruitingboard.com/?waitlist=1&utm_source=chicagofirewatch&utm_medium=banner";
 
 // Desktop layout (lg and up). The banner is 240px tall; the photo is scaled to that height.
 // Panorama = the goalkeeper photo with grass extended 2400px on the left and 12000px on the
