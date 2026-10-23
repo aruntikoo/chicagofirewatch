@@ -131,7 +131,7 @@ export default function Footer() {
         </div>
 
         <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-muted">
-          <p>© {new Date().getFullYear()} Chicago Fire Watch. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Chicago Fire Watch. All rights reserved. Licensing available.</p>
           <p className="flex items-center gap-1">
             Built with pride for Chicago
             <Flame size={12} className="text-fire-red" />
