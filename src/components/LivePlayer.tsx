@@ -8,10 +8,11 @@ import SponsorBanner from "./SponsorBanner";
 import { SPONSORSHIPS_ENABLED } from "@/lib/features";
 import { withUtm } from "@/lib/utm";
 
-const YOUTUBE_CHANNEL_ID = "UCCpOx6W4-N2BhFRHdc1043w";
+const YOUTUBE_CHANNEL_ID = "UCCpOx6W4-N2BhFRHdc1043w"; // required by the live_stream embed
+const YOUTUBE_HANDLE_URL = "https://www.youtube.com/@ChicagoFireWatch";
 const SUPPORT_URL = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
-const REPLAY_URL = withUtm(`https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`);
-const SUBSCRIBE_URL = withUtm(`https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}?sub_confirmation=1`);
+const REPLAY_URL = withUtm(`${YOUTUBE_HANDLE_URL}/videos`);
+const SUBSCRIBE_URL = withUtm(`${YOUTUBE_HANDLE_URL}?sub_confirmation=1`);
 const COMED_OUTAGE_DATE = "2026-10-06";
 const COMED_OUTAGE_START_MINUTES = 9 * 60 + 55;
 
@@ -73,7 +74,7 @@ export default function LivePlayer() {
   const showLive = STREAM_ENABLED && inLiveWindow && !comedOutage;
 
   const youtubeEmbedSrc = `https://www.youtube.com/embed/live_stream?channel=${YOUTUBE_CHANNEL_ID}&autoplay=1&mute=1&playsinline=1&rel=0&origin=${encodeURIComponent("https://www.chicagofirewatch.com")}`;
-  const youtubeWatchUrl = withUtm(`https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/live`);
+  const youtubeWatchUrl = withUtm(`${YOUTUBE_HANDLE_URL}/live`);
 
   return (
     <section id="live" className="relative w-full">
