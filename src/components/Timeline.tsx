@@ -1,3 +1,4 @@
+import { withUtm } from "@/lib/utm";
 import { milestones, timelapseVideos } from "@/data/milestones";
 import { Play } from "lucide-react";
 
@@ -23,7 +24,7 @@ export default function Timeline() {
               const watchHref =
                 item.videoHref ||
                 (item.videoId
-                  ? `https://www.youtube.com/watch?v=${item.videoId}`
+                  ? withUtm(`https://www.youtube.com/watch?v=${item.videoId}`)
                   : null);
               const isExternal = Boolean(watchHref && watchHref.startsWith("http"));
 
@@ -125,7 +126,7 @@ export default function Timeline() {
               {timelapseVideos.map((tl) => (
                 <a
                   key={tl.id}
-                  href={`https://www.youtube.com/watch?v=${tl.videoId}`}
+                  href={withUtm(`https://www.youtube.com/watch?v=${tl.videoId}`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group steel-border rounded-xl bg-charcoal/90 p-5 hover:border-fire-red/40 transition-colors"

@@ -1,3 +1,4 @@
+import { withUtm } from "@/lib/utm";
 import { Flame, Instagram, Youtube } from "lucide-react";
 import Link from "next/link";
 import { PARTNERS_ENABLED, SPONSORSHIPS_ENABLED } from "@/lib/features";
@@ -109,7 +110,7 @@ export default function Footer() {
                 <Instagram size={16} />
               </a>
               <a
-                href="https://www.youtube.com/@ChicagoFireWatch"
+                href={withUtm("https://www.youtube.com/@ChicagoFireWatch")}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Subscribe on YouTube"

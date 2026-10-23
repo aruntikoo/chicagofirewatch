@@ -1,0 +1,14 @@
+# UTM-tagged links to chicagofirewatch.com
+
+Use these when posting about the webcam so traffic is attributable in analytics.
+
+| Platform | Link |
+|---|---|
+| youtube | https://www.chicagofirewatch.com/?utm_source=youtube&utm_medium=social&utm_campaign=webcam_awareness |
+| instagram | https://www.chicagofirewatch.com/?utm_source=instagram&utm_medium=social&utm_campaign=webcam_awareness |
+| x | https://www.chicagofirewatch.com/?utm_source=x&utm_medium=social&utm_campaign=webcam_awareness |
+| reddit | https://www.chicagofirewatch.com/?utm_source=reddit&utm_medium=social&utm_campaign=webcam_awareness |
+| tiktok | https://www.chicagofirewatch.com/?utm_source=tiktok&utm_medium=social&utm_campaign=webcam_awareness |
+| threads | https://www.chicagofirewatch.com/?utm_source=threads&utm_medium=social&utm_campaign=webcam_awareness |
+
+On-site outbound YouTube links use `utm_source=chicagofirewatch&utm_medium=website&utm_campaign=webcam_awareness` (see `src/lib/utm.ts`; not applied to the iframe embed).
