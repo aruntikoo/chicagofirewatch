@@ -12,25 +12,46 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://www.chicagofirewatch.com";
+const TITLE = "Chicago Fire Watch | McDonald's Park Stadium Construction Live Cam";
+const DESCRIPTION =
+  "Independent live view of McDonald's Park, the new Chicago Fire FC stadium under construction at The 78. Watch the future of Chicago soccer rise in real time.";
+
 export const metadata: Metadata = {
-  title: "Chicago Fire Watch | Live Stadium Construction at The 78",
-  description:
-    "Independent live view of the Chicago Fire FC stadium construction at The 78. Watch the future of Chicago soccer rise in real time.",
+  metadataBase: new URL(SITE_URL),
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: [
     "Chicago Fire",
+    "McDonald's Park",
     "stadium construction",
     "The 78",
     "live cam",
     "MLS",
     "Chicago",
   ],
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "Chicago Fire Watch | Live Stadium Construction",
-    description:
-      "Watch the Chicago Fire stadium rise live from a unique vantage point at The 78.",
-    url: "https://chicagofirewatch.com",
+    title: TITLE,
+    description: DESCRIPTION,
+    url: SITE_URL,
     siteName: "Chicago Fire Watch",
     type: "website",
+    locale: "en_US",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Live view of McDonald's Park stadium construction at The 78, Chicago",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/og-image.jpg"],
   },
 };
 

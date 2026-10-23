@@ -1,15 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Play, Maximize, Volume2, VolumeX, Heart } from "lucide-react";
+import { Play, Maximize, Volume2, VolumeX, Heart, Youtube } from "lucide-react";
 import PresenceCounter from "./PresenceCounter";
 import RecruitingCrmBanner from "./RecruitingCrmBanner";
 import SponsorBanner from "./SponsorBanner";
 import { SPONSORSHIPS_ENABLED } from "@/lib/features";
+import { withUtm } from "@/lib/utm";
 
 const YOUTUBE_CHANNEL_ID = "UCCpOx6W4-N2BhFRHdc1043w";
 const SUPPORT_URL = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
-const REPLAY_URL = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`;
+const REPLAY_URL = withUtm(`https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`);
+const SUBSCRIBE_URL = withUtm(`https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}?sub_confirmation=1`);
 const COMED_OUTAGE_DATE = "2026-10-06";
 const COMED_OUTAGE_START_MINUTES = 9 * 60 + 55;
 
@@ -71,7 +73,7 @@ export default function LivePlayer() {
   const showLive = STREAM_ENABLED && inLiveWindow && !comedOutage;
 
   const youtubeEmbedSrc = `https://www.youtube.com/embed/live_stream?channel=${YOUTUBE_CHANNEL_ID}&autoplay=1&mute=1&playsinline=1&rel=0&origin=${encodeURIComponent("https://www.chicagofirewatch.com")}`;
-  const youtubeWatchUrl = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/live`;
+  const youtubeWatchUrl = withUtm(`https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/live`);
 
   return (
     <section id="live" className="relative w-full">
@@ -99,14 +101,14 @@ export default function LivePlayer() {
               {showLive && <PresenceCounter />}
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-warm-white">
-              Chicago Fire Stadium
+              McDonald&apos;s Park
               <span className="block text-fire-red-light mt-1">
-                Construction Live
+                Chicago Fire Stadium Construction Live
               </span>
             </h1>
             <p className="mt-3 text-muted max-w-2xl text-base sm:text-lg">
-              Independent fan view of the new Chicago Fire FC stadium rising at
-              The 78. Watch steel, brick, and glass take shape in real time.
+              Independent fan view of McDonald&apos;s Park, the new Chicago Fire FC
+              stadium rising at The 78. Watch steel, brick, and glass take shape in real time.
             </p>
           </div>
         </div>
@@ -240,6 +242,15 @@ export default function LivePlayer() {
           >
             <Heart className="w-4 h-4 fill-current" />
             Support the Cam
+          </a>
+          <a
+            href={SUBSCRIBE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-white/25 bg-black/40 hover:bg-black/60 text-warm-white font-semibold text-sm sm:text-base transition-colors"
+          >
+            <Youtube className="w-4 h-4" />
+            Subscribe on YouTube
           </a>
           <p className="text-sm text-muted text-center sm:text-left">
             Help keep the live view running for Fire fans.

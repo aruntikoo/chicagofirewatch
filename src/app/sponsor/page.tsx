@@ -10,6 +10,21 @@ export const metadata: Metadata = {
   title: "Sponsor | Chicago Fire Watch",
   description:
     "Sponsor the independent live cam of the Chicago Fire FC stadium construction at The 78. Reach engaged Fire fans watching the build in real time.",
+  alternates: { canonical: "/sponsor" },
+  openGraph: {
+    title: "Sponsor | Chicago Fire Watch",
+    description: "Sponsor the independent live cam of the Chicago Fire FC stadium construction at The 78. Reach engaged Fire fans watching the build in real time.",
+    url: "/sponsor",
+    siteName: "Chicago Fire Watch",
+    type: "website",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sponsor | Chicago Fire Watch",
+    description: "Sponsor the independent live cam of the Chicago Fire FC stadium construction at The 78. Reach engaged Fire fans watching the build in real time.",
+    images: ["/og-image.jpg"],
+  },
 };
 
 const tiers = [

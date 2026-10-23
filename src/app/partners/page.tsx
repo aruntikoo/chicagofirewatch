@@ -10,6 +10,21 @@ export const metadata: Metadata = {
   title: "Retail Partners | Chicago Fire Watch",
   description:
     "Partner your online store with Chicago Fire Watch. Reach Fire fans watching the stadium rise at The 78 via affiliate or hybrid retail partnerships.",
+  alternates: { canonical: "/partners" },
+  openGraph: {
+    title: "Retail Partners | Chicago Fire Watch",
+    description: "Partner your online store with Chicago Fire Watch. Reach Fire fans watching the stadium rise at The 78 via affiliate or hybrid retail partnerships.",
+    url: "/partners",
+    siteName: "Chicago Fire Watch",
+    type: "website",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Retail Partners | Chicago Fire Watch",
+    description: "Partner your online store with Chicago Fire Watch. Reach Fire fans watching the stadium rise at The 78 via affiliate or hybrid retail partnerships.",
+    images: ["/og-image.jpg"],
+  },
 };
 
 const options = [
