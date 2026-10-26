@@ -4,6 +4,10 @@ import Footer from "@/components/Footer";
 import MediaRequestForm from "@/components/MediaRequestForm";
 import Link from "next/link";
 
+// Same real still used on the landing page player background (September 2026, CC0)
+const SITE_STILL =
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/McDonald%E2%80%99s_Park_September_2026.jpg/1600px-McDonald%E2%80%99s_Park_September_2026.jpg";
+
 export const metadata: Metadata = {
   title: "Media & Licensing | Chicago Fire Watch",
   description:
@@ -32,8 +36,12 @@ export default function MediaPage() {
     <>
       <Header />
       <main className="flex-1 pt-16">
-        <section className="py-12 md:py-16 border-b border-fire-red/15">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <section
+          className="relative py-12 md:py-16 border-b border-fire-red/15 overflow-hidden"
+          style={{ backgroundImage: `url('${SITE_STILL}')` }}
+        >
+          <div className="absolute inset-0 bg-black/75" />
+          <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-sm font-semibold uppercase tracking-widest text-fire-red-light mb-3">
               Media & Licensing
             </p>
@@ -46,8 +54,12 @@ export default function MediaPage() {
           </div>
         </section>
 
-        <section className="py-12 md:py-16">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <section
+          className="relative py-12 md:py-16 overflow-hidden"
+          style={{ backgroundImage: `url('${SITE_STILL}')` }}
+        >
+          <div className="absolute inset-0 bg-black/80" />
+          <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
             <div>
               <h2 className="text-2xl font-bold text-warm-white mb-4">License summary</h2>
               <ul className="space-y-3 text-muted">
