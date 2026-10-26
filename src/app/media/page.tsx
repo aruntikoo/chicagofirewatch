@@ -6,7 +6,7 @@ import Link from "next/link";
 
 // Same real still used on the landing page player background (September 2026, CC0)
 const SITE_STILL =
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/McDonald%E2%80%99s_Park_September_2026.jpg/1600px-McDonald%E2%80%99s_Park_September_2026.jpg";
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/McDonald%E2%80%99s_Park_September_2026.jpg/1280px-McDonald%E2%80%99s_Park_September_2026.jpg";
 
 export const metadata: Metadata = {
   title: "Media & Licensing | Chicago Fire Watch",
