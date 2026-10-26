@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   const entries: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, lastModified: now, changeFrequency: "daily", priority: 1 },
+    { url: `${SITE_URL}/media`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
   ];
   if (PARTNERS_ENABLED) {
     entries.push({ url: `${SITE_URL}/partners`, lastModified: now, changeFrequency: "monthly", priority: 0.5 });

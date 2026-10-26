@@ -35,7 +35,7 @@ export default function Footer() {
             <p className="text-muted text-sm leading-relaxed max-w-md mb-4">
               Independent live stream of the Chicago Fire FC stadium construction
               at The 78. Built with pride for fans who want a front-row seat to
-              Chicago&apos;s newest sports landmark.
+              Chicago's newest sports landmark.
             </p>
             <p className="text-xs text-muted/80 border-l-2 border-fire-red/40 pl-3">
               This is an independent fan project and is not affiliated with,
@@ -67,6 +67,11 @@ export default function Footer() {
               <li>
                 <Link href="/#community" className="hover:text-fire-red-light transition-colors">
                   Community
+                </Link>
+              </li>
+              <li>
+                <Link href="/media" className="hover:text-fire-red-light transition-colors">
+                  Media & Licensing
                 </Link>
               </li>
               {SPONSORSHIPS_ENABLED && (
