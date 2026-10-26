@@ -16,6 +16,10 @@ const SUBSCRIBE_URL = withUtm(`${YOUTUBE_HANDLE_URL}?sub_confirmation=1`);
 const COMED_OUTAGE_DATE = "2026-10-06";
 const COMED_OUTAGE_START_MINUTES = 9 * 60 + 55;
 
+// Real still of McDonald's Park construction (September 2026, CC0 via Wikimedia Commons)
+const SITE_STILL =
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/McDonald%E2%80%99s_Park_September_2026.jpg/1600px-McDonald%E2%80%99s_Park_September_2026.jpg";
+
 function chicagoHour(): number {
   const hourText = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/Chicago",
@@ -102,13 +106,13 @@ export default function LivePlayer() {
               {showLive && <PresenceCounter />}
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-warm-white">
-              McDonald&apos;s Park
+              McDonald's Park
               <span className="block text-fire-red-light mt-1">
                 Chicago Fire Stadium Construction Live
               </span>
             </h1>
             <p className="mt-3 text-muted max-w-2xl text-base sm:text-lg">
-              Independent fan view of McDonald&apos;s Park, the new Chicago Fire FC
+              Independent fan view of McDonald's Park, the new Chicago Fire FC
               stadium rising at The 78. Watch steel, brick, and glass take shape in real time.
             </p>
           </div>
@@ -117,7 +121,10 @@ export default function LivePlayer() {
         <div className="relative steel-border rounded-xl overflow-hidden bg-black shadow-2xl">
           <div className="aspect-video relative bg-gradient-to-br from-charcoal to-black">
             {!showLive ? (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-[url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=80')] bg-cover bg-center">
+              <div
+                className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center"
+                style={{ backgroundImage: `url('${SITE_STILL}')` }}
+              >
                 <div className="absolute inset-0 bg-black/70" />
                 <div className="relative z-10 flex flex-col items-center gap-3 px-6 text-center max-w-lg">
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted">
@@ -165,7 +172,10 @@ export default function LivePlayer() {
                 </div>
               </div>
             ) : !isPlaying ? (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-[url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=80')] bg-cover bg-center">
+              <div
+                className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center"
+                style={{ backgroundImage: `url('${SITE_STILL}')` }}
+              >
                 <div className="absolute inset-0 bg-black/60" />
                 <button
                   onClick={() => setIsPlaying(true)}
