@@ -104,7 +104,7 @@ export default function MediaRequestForm() {
 
   if (submitted) {
     return (
-      <div className="rounded-xl border border-fire-red/30 bg-charcoal/80 p-8 text-center">
+      <div className="steel-border rounded-xl bg-charcoal/90 p-8 text-center">
         <h3 className="text-xl font-bold text-warm-white mb-2">Thanks — your request is in</h3>
         <p className="text-muted text-sm max-w-md mx-auto">
           We'll reply within a few hours during 7am–6pm CT. If your deadline is urgent, email{" "}
@@ -124,14 +124,15 @@ export default function MediaRequestForm() {
     );
   }
 
+  // Match landing page EmailSignup / card styling more closely
   const inputClass =
-    "w-full rounded-lg bg-background border border-white/10 px-3 py-2.5 text-sm text-warm-white placeholder:text-muted/50 focus:outline-none focus:border-fire-red/50";
+    "w-full rounded-lg bg-black/40 border border-fire-red/25 px-3 py-2.5 text-sm text-warm-white placeholder:text-muted/60 focus:outline-none focus:border-fire-red/50";
   const labelClass = "block text-xs uppercase tracking-wider text-muted mb-1.5";
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-xl border border-fire-red/20 bg-charcoal/80 p-6 sm:p-8 space-y-5"
+      className="steel-border rounded-xl bg-charcoal/90 p-6 sm:p-8 space-y-5"
     >
       <div className="absolute -left-[9999px] opacity-0 h-0 overflow-hidden" aria-hidden="true">
         <label htmlFor="company_url">Company URL</label>
@@ -232,7 +233,7 @@ export default function MediaRequestForm() {
                 type="checkbox"
                 checked={assets.includes(asset)}
                 onChange={() => toggleAsset(asset)}
-                className="rounded border-white/20 bg-background text-fire-red focus:ring-fire-red"
+                className="rounded border-fire-red/30 bg-black/40 text-fire-red focus:ring-fire-red"
               />
               {asset}
             </label>
@@ -289,7 +290,7 @@ export default function MediaRequestForm() {
           required
           checked={acknowledgement}
           onChange={(e) => setAcknowledgement(e.target.checked)}
-          className="mt-1 rounded border-white/20 bg-background text-fire-red focus:ring-fire-red"
+          className="mt-1 rounded border-fire-red/30 bg-black/40 text-fire-red focus:ring-fire-red"
         />
         <span>
           I agree to credit 'Courtesy Chicago Fire Watch / chicagofirewatch.com' and to the license terms above.{" "}
