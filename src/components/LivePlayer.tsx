@@ -16,9 +16,8 @@ const SUBSCRIBE_URL = withUtm(`${YOUTUBE_HANDLE_URL}?sub_confirmation=1`);
 const COMED_OUTAGE_DATE = "2026-10-06";
 const COMED_OUTAGE_START_MINUTES = 9 * 60 + 55;
 
-// Real still of McDonald's Park construction (September 2026, CC0 via Wikimedia Commons)
-const SITE_STILL =
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/McDonald%E2%80%99s_Park_September_2026.jpg/1280px-McDonald%E2%80%99s_Park_September_2026.jpg";
+// Still from the live cam (correct vantage point)
+const SITE_STILL = "/images/mcdonalds-park-cam.jpg";
 
 function chicagoHour(): number {
   const hourText = new Intl.DateTimeFormat("en-US", {
