@@ -35,90 +35,115 @@ export default function MediaPage() {
     <>
       <Header />
       <main className="flex-1 pt-16">
-        <section
-          className="relative py-12 md:py-16 border-b border-fire-red/15 overflow-hidden"
-          style={{ backgroundImage: `url('${SITE_STILL}')` }}
-        >
-          <div className="absolute inset-0 bg-black/75" />
-          <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-sm font-semibold uppercase tracking-widest text-fire-red-light mb-3">
+        {/* Compact header + intro */}
+        <section className="py-8 md:py-10 border-b border-fire-red/10">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p className="text-sm font-semibold uppercase tracking-widest text-fire-red-light mb-2">
               Media & Licensing
             </p>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-warm-white mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-warm-white mb-3">
               Media & Licensing — McDonald's Park Construction Footage
             </h1>
-            <p className="text-muted text-base sm:text-lg leading-relaxed mb-6">
+            <p className="text-muted text-sm sm:text-base leading-relaxed max-w-3xl mx-auto">
               Chicago Fire Watch runs a live cam on the construction of McDonald's Park, the Chicago Fire FC's new stadium at The 78, streaming 7am–6pm CT every day. News outlets can request stills, clips, monthly timelapses, and a full start-to-opening-day timelapse. Send your request below and we'll reply within a few hours during stream hours.
             </p>
           </div>
         </section>
 
-        <section
-          className="relative py-12 md:py-16 overflow-hidden"
-          style={{ backgroundImage: `url('${SITE_STILL}')` }}
-        >
-          <div className="absolute inset-0 bg-black/80" />
-          <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-            <div>
-              <h2 className="text-2xl font-bold text-warm-white mb-4">License summary</h2>
-              <ul className="space-y-3 text-muted">
-                <li className="flex gap-3">
-                  <span className="text-fire-red-light shrink-0">●</span>
-                  <span>You get a non-exclusive license for one story, on your outlet's own platforms.</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-fire-red-light shrink-0">●</span>
-                  <span>We keep ownership. No resale, sublicensing, or use for AI training.</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-fire-red-light shrink-0">●</span>
-                  <span>One still for one story is free with credit. Clips and monthly timelapses are licensed per story; rates quoted on request. The full start-to-opening-day timelapse is premium and quoted separately.</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-fire-red-light shrink-0">●</span>
-                  <span>Files are delivered full-res through an expiring download link. Video carries a small corner watermark. We don't upload to outlet portals or submission forms.</span>
-                </li>
-              </ul>
-            </div>
+        {/* Two-column: license left, form right */}
+        <section className="py-8 md:py-10">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
+              {/* Left: license summary */}
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-xl font-bold text-warm-white mb-3">License summary</h2>
+                  <ul className="space-y-2.5 text-muted text-sm">
+                    <li className="flex gap-2.5">
+                      <span className="text-fire-red-light shrink-0">●</span>
+                      <span>You get a non-exclusive license for one story, on your outlet's own platforms.</span>
+                    </li>
+                    <li className="flex gap-2.5">
+                      <span className="text-fire-red-light shrink-0">●</span>
+                      <span>We keep ownership. No resale, sublicensing, or use for AI training.</span>
+                    </li>
+                    <li className="flex gap-2.5">
+                      <span className="text-fire-red-light shrink-0">●</span>
+                      <span>One still for one story is free with credit. Clips and monthly timelapses are licensed per story; rates quoted on request. The full start-to-opening-day timelapse is premium and quoted separately.</span>
+                    </li>
+                    <li className="flex gap-2.5">
+                      <span className="text-fire-red-light shrink-0">●</span>
+                      <span>Files are delivered full-res through an expiring download link. Video carries a small corner watermark. We don't upload to outlet portals or submission forms.</span>
+                    </li>
+                  </ul>
+                </div>
 
-            <div className="rounded-xl border border-fire-red/40 bg-fire-red/10 p-6">
-              <h3 className="text-lg font-semibold text-warm-white mb-2">Required credit</h3>
-              <p className="text-warm-white font-medium">
-                Courtesy Chicago Fire Watch / chicagofirewatch.com — on-screen or in the caption.
-              </p>
-            </div>
+                <div className="rounded-xl border border-fire-red/40 bg-fire-red/10 p-4">
+                  <h3 className="text-base font-semibold text-warm-white mb-1">Required credit</h3>
+                  <p className="text-warm-white text-sm font-medium">
+                    Courtesy Chicago Fire Watch / chicagofirewatch.com — on-screen or in the caption.
+                  </p>
+                </div>
 
-            <div className="text-sm text-muted">
-              <p className="mb-2">
-                <strong className="text-warm-white">Response time:</strong> We reply within a few hours, 7am–6pm CT.
-              </p>
-              <p>
-                Prefer email? Write to{" "}
-                <a
-                  href="mailto:press@chicagofirewatch.com"
-                  className="text-fire-red-light hover:underline"
-                >
-                  press@chicagofirewatch.com
-                </a>{" "}
-                with your outlet, story, where it runs, and deadline.
-              </p>
+                <div className="text-xs text-muted space-y-1">
+                  <p>
+                    <strong className="text-warm-white">Response time:</strong> We reply within a few hours, 7am–6pm CT.
+                  </p>
+                  <p>
+                    Prefer email? Write to{" "}
+                    <a href="mailto:press@chicagofirewatch.com" className="text-fire-red-light hover:underline">
+                      press@chicagofirewatch.com
+                    </a>{" "}
+                    with your outlet, story, where it runs, and deadline.
+                  </p>
+                </div>
+
+                {/* Small construction still as spacer/accent */}
+                <div className="hidden lg:block rounded-xl overflow-hidden steel-border">
+                  <img
+                    src={SITE_STILL}
+                    alt="McDonald's Park construction site from the Chicago Fire Watch cam"
+                    className="w-full h-40 object-cover object-center"
+                  />
+                </div>
+              </div>
+
+              {/* Right: form */}
+              <div>
+                <h2 className="text-xl font-bold text-warm-white mb-1 text-center lg:text-left">
+                  Request footage
+                </h2>
+                <p className="text-muted text-xs text-center lg:text-left mb-4">
+                  Fill out the form and we'll get back to you during stream hours.
+                </p>
+                <MediaRequestForm />
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="py-12 md:py-16 bg-charcoal/40 border-t border-fire-red/10">
-          <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-warm-white mb-2 text-center">
-              Request footage
-            </h2>
-            <p className="text-muted text-sm text-center mb-8">
-              Fill out the form and we'll get back to you during stream hours.
-            </p>
-            <MediaRequestForm />
+        {/* Construction timeline ticker */}
+        <section className="border-t border-fire-red/10 bg-charcoal/40 py-3">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center gap-3 overflow-hidden">
+              <span className="text-xs font-semibold uppercase tracking-wider text-fire-red-light shrink-0">
+                Construction Timeline
+              </span>
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <img
+                    key={i}
+                    src={SITE_STILL}
+                    alt={`Construction still ${i}`}
+                    className="h-12 w-20 object-cover rounded shrink-0 steel-border"
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
-        <section className="py-8 text-center">
+        <section className="py-6 text-center">
           <Link href="/" className="text-sm text-fire-red-light hover:underline">
             ← Back to the live cam
           </Link>
