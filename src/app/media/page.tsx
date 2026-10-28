@@ -4,9 +4,6 @@ import Footer from "@/components/Footer";
 import MediaRequestForm from "@/components/MediaRequestForm";
 import Link from "next/link";
 
-// Still from the live cam (correct vantage point)
-const SITE_STILL = "/images/mcdonalds-park-cam.jpg";
-
 export const metadata: Metadata = {
   title: "Media & Licensing | Chicago Fire Watch",
   description:
@@ -97,15 +94,6 @@ export default function MediaPage() {
                     with your outlet, story, where it runs, and deadline.
                   </p>
                 </div>
-
-                {/* Small construction still as spacer/accent */}
-                <div className="hidden lg:block rounded-xl overflow-hidden steel-border">
-                  <img
-                    src={SITE_STILL}
-                    alt="McDonald's Park construction site from the Chicago Fire Watch cam"
-                    className="w-full h-40 object-cover object-center"
-                  />
-                </div>
               </div>
 
               {/* Right: form */}
@@ -117,27 +105,6 @@ export default function MediaPage() {
                   Fill out the form and we'll get back to you during stream hours.
                 </p>
                 <MediaRequestForm />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Construction timeline ticker */}
-        <section className="border-t border-fire-red/10 bg-charcoal/40 py-3">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-3 overflow-hidden">
-              <span className="text-xs font-semibold uppercase tracking-wider text-fire-red-light shrink-0">
-                Construction Timeline
-              </span>
-              <div className="flex gap-2 overflow-x-auto pb-1">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <img
-                    key={i}
-                    src={SITE_STILL}
-                    alt={`Construction still ${i}`}
-                    className="h-12 w-20 object-cover rounded shrink-0 steel-border"
-                  />
-                ))}
               </div>
             </div>
           </div>
