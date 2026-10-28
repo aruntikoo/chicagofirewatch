@@ -41,7 +41,7 @@ export default function MediaPage() {
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-warm-white mb-3">
               Media & Licensing — McDonald's Park Construction Footage
             </h1>
-            <p className="text-muted text-base sm:text-lg leading-relaxed max-w-3xl mx-auto">
+            <p className="text-muted text-lg leading-relaxed max-w-3xl mx-auto">
               Chicago Fire Watch runs a live cam on the construction of McDonald's Park, the Chicago Fire FC's new stadium at The 78, streaming 7am–6pm CT every day. News outlets can request stills, clips, and monthly timelapses. Send your request below and we'll reply within a few hours during stream hours.
             </p>
           </div>
@@ -54,35 +54,35 @@ export default function MediaPage() {
               {/* Left: license summary */}
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-xl font-bold text-warm-white mb-3">License summary</h2>
-                  <ul className="space-y-2.5 text-muted text-base">
-                    <li className="flex gap-2.5">
+                  <h2 className="text-2xl font-bold text-warm-white mb-4">License summary</h2>
+                  <ul className="space-y-3 text-muted text-lg">
+                    <li className="flex gap-3">
                       <span className="text-fire-red-light shrink-0">●</span>
                       <span>You get a non-exclusive license for one story, on your outlet's own platforms.</span>
                     </li>
-                    <li className="flex gap-2.5">
+                    <li className="flex gap-3">
                       <span className="text-fire-red-light shrink-0">●</span>
                       <span>We keep ownership. No resale, sublicensing, or use for AI training.</span>
                     </li>
-                    <li className="flex gap-2.5">
+                    <li className="flex gap-3">
                       <span className="text-fire-red-light shrink-0">●</span>
                       <span>One still for one story is free with credit. Clips and monthly timelapses are licensed per story; rates quoted on request.</span>
                     </li>
-                    <li className="flex gap-2.5">
+                    <li className="flex gap-3">
                       <span className="text-fire-red-light shrink-0">●</span>
                       <span>Files are delivered full-res through an expiring download link. Video carries a small corner watermark. We don't upload to outlet portals or submission forms.</span>
                     </li>
                   </ul>
                 </div>
 
-                <div className="rounded-xl border border-fire-red/40 bg-fire-red/10 p-4">
-                  <h3 className="text-base font-semibold text-warm-white mb-1">Required credit</h3>
-                  <p className="text-warm-white text-base font-medium">
+                <div className="rounded-xl border border-fire-red/40 bg-fire-red/10 p-5">
+                  <h3 className="text-lg font-semibold text-warm-white mb-1">Required credit</h3>
+                  <p className="text-warm-white text-lg font-medium">
                     Courtesy Chicago Fire Watch / chicagofirewatch.com — on-screen or in the caption.
                   </p>
                 </div>
 
-                <div className="text-sm text-muted space-y-1">
+                <div className="text-base text-muted space-y-1.5">
                   <p>
                     <strong className="text-warm-white">Response time:</strong> We reply within a few hours, 7am–6pm CT.
                   </p>
@@ -98,10 +98,10 @@ export default function MediaPage() {
 
               {/* Right: form */}
               <div>
-                <h2 className="text-xl font-bold text-warm-white mb-1 text-center lg:text-left">
+                <h2 className="text-2xl font-bold text-warm-white mb-1 text-center lg:text-left">
                   Request footage
                 </h2>
-                <p className="text-muted text-sm text-center lg:text-left mb-4">
+                <p className="text-muted text-base text-center lg:text-left mb-4">
                   Fill out the form and we'll get back to you during stream hours.
                 </p>
                 <MediaRequestForm />
@@ -111,7 +111,7 @@ export default function MediaPage() {
         </section>
 
         <section className="py-6 text-center">
-          <Link href="/" className="text-sm text-fire-red-light hover:underline">
+          <Link href="/" className="text-base text-fire-red-light hover:underline">
             ← Back to the live cam
           </Link>
         </section>
