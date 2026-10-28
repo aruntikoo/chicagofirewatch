@@ -1,83 +1,79 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Play, Maximize, Volume2, VolumeX, Heart, Youtube } from "lucide-react";
+import { Maximize, Volume2, VolumeX, Heart, Youtube } from "lucide-react";
 import PresenceCounter from "./PresenceCounter";
 import RecruitingCrmBanner from "./RecruitingCrmBanner";
 import SponsorBanner from "./SponsorBanner";
 import { SPONSORSHIPS_ENABLED } from "@/lib/features";
 import { withUtm } from "@/lib/utm";
 
-const YOUTUBE_CHANNEL_ID = "UCCpOx6W4-N2BhFRHdc1043w"; // required by the live_stream embed
 const YOUTUBE_HANDLE_URL = "https://www.youtube.com/@ChicagoFireWatch";
 const SUPPORT_URL = "https://donate.stripe.com/6oU28q0vs233554h287Re00";
 const REPLAY_URL = withUtm(`${YOUTUBE_HANDLE_URL}/videos`);
 const SUBSCRIBE_URL = withUtm(`${YOUTUBE_HANDLE_URL}?sub_confirmation=1`);
-const COMED_OUTAGE_DATE = "2026-10-06";
-const COMED_OUTAGE_START_MINUTES = 9 * 60 + 55;
-
-// Still from the live cam (correct vantage point)
+const ORIGIN = "https://www.chicagofirewatch.com";
 const SITE_STILL = "/images/mcdonalds-park-cam.jpg";
+const POLL_LIVE_WINDOW_MS = 60_000;
+const POLL_OFF_HOURS_MS = 15 * 60_000;
 
+type LiveStatus = {
+  live: boolean;
+  videoId: string | null;
+};
 
-function chicagoHour(): number {
+function isLiveWindowNow(): boolean {
   const hourText = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/Chicago",
     hour: "numeric",
     hourCycle: "h23",
   }).format(new Date());
-  return parseInt(hourText, 10);
-}
-
-function chicagoNow(): { date: string; minutes: number } {
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/Chicago",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "numeric",
-    minute: "numeric",
-    hourCycle: "h23",
-  }).formatToParts(new Date());
-  const get = (type: string) => parts.find((part) => part.type === type)?.value ?? "";
-  return {
-    date: `${get("year")}-${get("month")}-${get("day")}`,
-    minutes: parseInt(get("hour"), 10) * 60 + parseInt(get("minute"), 10),
-  };
-}
-
-function isLiveWindowNow(): boolean {
-  const hour = chicagoHour();
+  const hour = parseInt(hourText, 10);
   return hour >= 7 && hour < 18;
 }
 
-function isComedOutageNow(): boolean {
-  const { date, minutes } = chicagoNow();
-  return date === COMED_OUTAGE_DATE && minutes >= COMED_OUTAGE_START_MINUTES;
-}
-
 export default function LivePlayer() {
-  const [isPlaying, setIsPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
   const [inLiveWindow, setInLiveWindow] = useState(isLiveWindowNow);
-  const [comedOutage, setComedOutage] = useState(isComedOutageNow);
-
-  // Manual kill switch — set false to force the offline card.
-  const STREAM_ENABLED = true;
+  const [status, setStatus] = useState<LiveStatus>({ live: false, videoId: null });
 
   useEffect(() => {
-    const tick = () => {
-      setInLiveWindow(isLiveWindowNow());
-      setComedOutage(isComedOutageNow());
+    let cancelled = false;
+    let timer: number | undefined;
+
+    async function refresh() {
+      const windowOpen = isLiveWindowNow();
+      if (!cancelled) setInLiveWindow(windowOpen);
+      try {
+        const res = await fetch("/api/live-status", { cache: "no-store" });
+        if (res.ok) {
+          const data = (await res.json()) as LiveStatus;
+          if (!cancelled) {
+            setStatus({
+              live: Boolean(data.live && data.videoId),
+              videoId: data.videoId ?? null,
+            });
+          }
+        }
+      } catch {
+        // keep last known status
+      }
+      if (!cancelled) {
+        timer = window.setTimeout(refresh, windowOpen ? POLL_LIVE_WINDOW_MS : POLL_OFF_HOURS_MS);
+      }
+    }
+
+    refresh();
+    return () => {
+      cancelled = true;
+      if (timer) window.clearTimeout(timer);
     };
-    tick();
-    const id = window.setInterval(tick, 15_000);
-    return () => window.clearInterval(id);
   }, []);
 
-  const showLive = STREAM_ENABLED && inLiveWindow && !comedOutage;
-
-  const youtubeEmbedSrc = `https://www.youtube.com/embed/live_stream?channel=${YOUTUBE_CHANNEL_ID}&autoplay=1&mute=1&playsinline=1&rel=0&origin=${encodeURIComponent("https://www.chicagofirewatch.com")}`;
+  const showLive = status.live && Boolean(status.videoId);
+  const youtubeEmbedSrc = showLive
+    ? `https://www.youtube.com/embed/${status.videoId}?autoplay=1&mute=${muted ? 1 : 0}&playsinline=1&rel=0&origin=${encodeURIComponent(ORIGIN)}`
+    : "";
   const youtubeWatchUrl = withUtm(`${YOUTUBE_HANDLE_URL}/live`);
 
   return (
@@ -98,7 +94,7 @@ export default function LivePlayer() {
                   <>
                     <span className="w-2.5 h-2.5 rounded-full bg-muted" />
                     <span className="text-sm font-semibold uppercase tracking-widest text-muted">
-                      Cam offline
+                      {inLiveWindow ? "Camera trouble" : "Cam offline"}
                     </span>
                   </>
                 )}
@@ -120,28 +116,40 @@ export default function LivePlayer() {
 
         <div className="relative steel-border rounded-xl overflow-hidden bg-black shadow-2xl">
           <div className="aspect-video relative bg-gradient-to-br from-charcoal to-black">
-            {!showLive ? (
+            {showLive ? (
+              <iframe
+                key={status.videoId ?? "live"}
+                className="absolute inset-0 w-full h-full"
+                src={youtubeEmbedSrc}
+                title="Chicago Fire Stadium Live Construction"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            ) : (
               <div
                 className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center"
                 style={{ backgroundImage: `url('${SITE_STILL}')` }}
               >
                 <div className="absolute inset-0 bg-black/70" />
                 <div className="relative z-10 flex flex-col items-center gap-3 px-6 text-center max-w-lg">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-muted">
-                    Cam offline
-                  </p>
-                  {comedOutage ? (
+                  {inLiveWindow ? (
                     <>
+                      <p className="text-xs font-semibold uppercase tracking-widest text-muted">
+                        Camera trouble
+                      </p>
                       <p className="text-2xl sm:text-3xl font-bold text-warm-white">
-                        Power’s out. Cam’s out.
+                        We’re working on it, back soon
                       </p>
                       <p className="text-sm text-warm-white/75">
-                        Building power is off from 10:00 a.m. today for ComEd
-                        equipment repairs. Back tomorrow at 7:00 a.m. Central.
+                        The cam should be live 7:00 AM–6:00 PM CT. The feed is down right now.
                       </p>
                     </>
                   ) : (
                     <>
+                      <p className="text-xs font-semibold uppercase tracking-widest text-muted">
+                        Cam offline
+                      </p>
                       <p className="text-2xl sm:text-3xl font-bold text-warm-white">
                         Back at 7:00 AM Central
                       </p>
@@ -171,39 +179,9 @@ export default function LivePlayer() {
                   </div>
                 </div>
               </div>
-            ) : !isPlaying ? (
-              <div
-                className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center"
-                style={{ backgroundImage: `url('${SITE_STILL}')` }}
-              >
-                <div className="absolute inset-0 bg-black/60" />
-                <button
-                  onClick={() => setIsPlaying(true)}
-                  className="relative z-10 group flex flex-col items-center gap-4"
-                >
-                  <div className="w-20 h-20 rounded-full bg-fire-red flex items-center justify-center shadow-lg shadow-fire-red/40 group-hover:scale-110 group-hover:bg-fire-red-light transition-all">
-                    <Play className="w-8 h-8 text-white fill-white ml-1" />
-                  </div>
-                  <span className="text-warm-white font-semibold text-lg tracking-wide">
-                    Watch Live Construction
-                  </span>
-                </button>
-                <p className="absolute bottom-6 left-0 right-0 text-center text-sm text-warm-white/70 z-10">
-                  Click to load the live stream from the construction site
-                </p>
-              </div>
-            ) : (
-              <iframe
-                className="absolute inset-0 w-full h-full"
-                src={youtubeEmbedSrc}
-                title="Chicago Fire Stadium Live Construction"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              />
             )}
 
-            {showLive && isPlaying && (
+            {showLive && (
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-between opacity-0 hover:opacity-100 transition-opacity">
                 <div className="flex items-center gap-3">
                   <button
