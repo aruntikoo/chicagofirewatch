@@ -41,8 +41,8 @@ export default function MediaPage() {
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-warm-white mb-3">
               Media & Licensing — McDonald's Park Construction Footage
             </h1>
-            <p className="text-muted text-sm sm:text-base leading-relaxed max-w-3xl mx-auto">
-              Chicago Fire Watch runs a live cam on the construction of McDonald's Park, the Chicago Fire FC's new stadium at The 78, streaming 7am–6pm CT every day. News outlets can request stills, clips, monthly timelapses, and a full start-to-opening-day timelapse. Send your request below and we'll reply within a few hours during stream hours.
+            <p className="text-muted text-base sm:text-lg leading-relaxed max-w-3xl mx-auto">
+              Chicago Fire Watch runs a live cam on the construction of McDonald's Park, the Chicago Fire FC's new stadium at The 78, streaming 7am–6pm CT every day. News outlets can request stills, clips, and monthly timelapses. Send your request below and we'll reply within a few hours during stream hours.
             </p>
           </div>
         </section>
@@ -55,7 +55,7 @@ export default function MediaPage() {
               <div className="space-y-6">
                 <div>
                   <h2 className="text-xl font-bold text-warm-white mb-3">License summary</h2>
-                  <ul className="space-y-2.5 text-muted text-sm">
+                  <ul className="space-y-2.5 text-muted text-base">
                     <li className="flex gap-2.5">
                       <span className="text-fire-red-light shrink-0">●</span>
                       <span>You get a non-exclusive license for one story, on your outlet's own platforms.</span>
@@ -66,7 +66,7 @@ export default function MediaPage() {
                     </li>
                     <li className="flex gap-2.5">
                       <span className="text-fire-red-light shrink-0">●</span>
-                      <span>One still for one story is free with credit. Clips and monthly timelapses are licensed per story; rates quoted on request. The full start-to-opening-day timelapse is premium and quoted separately.</span>
+                      <span>One still for one story is free with credit. Clips and monthly timelapses are licensed per story; rates quoted on request.</span>
                     </li>
                     <li className="flex gap-2.5">
                       <span className="text-fire-red-light shrink-0">●</span>
@@ -77,12 +77,12 @@ export default function MediaPage() {
 
                 <div className="rounded-xl border border-fire-red/40 bg-fire-red/10 p-4">
                   <h3 className="text-base font-semibold text-warm-white mb-1">Required credit</h3>
-                  <p className="text-warm-white text-sm font-medium">
+                  <p className="text-warm-white text-base font-medium">
                     Courtesy Chicago Fire Watch / chicagofirewatch.com — on-screen or in the caption.
                   </p>
                 </div>
 
-                <div className="text-xs text-muted space-y-1">
+                <div className="text-sm text-muted space-y-1">
                   <p>
                     <strong className="text-warm-white">Response time:</strong> We reply within a few hours, 7am–6pm CT.
                   </p>
@@ -101,7 +101,7 @@ export default function MediaPage() {
                 <h2 className="text-xl font-bold text-warm-white mb-1 text-center lg:text-left">
                   Request footage
                 </h2>
-                <p className="text-muted text-xs text-center lg:text-left mb-4">
+                <p className="text-muted text-sm text-center lg:text-left mb-4">
                   Fill out the form and we'll get back to you during stream hours.
                 </p>
                 <MediaRequestForm />
