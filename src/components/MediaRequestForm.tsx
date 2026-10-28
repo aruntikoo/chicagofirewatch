@@ -6,7 +6,6 @@ const ASSET_OPTIONS = [
   "Still",
   "Clip",
   "Monthly timelapse",
-  "Full timelapse",
   "Other",
 ] as const;
 
@@ -106,7 +105,7 @@ export default function MediaRequestForm() {
     return (
       <div className="steel-border rounded-xl bg-charcoal/90 p-8 text-center">
         <h3 className="text-xl font-bold text-warm-white mb-2">Thanks — your request is in</h3>
-        <p className="text-muted text-sm max-w-md mx-auto">
+        <p className="text-muted text-base max-w-md mx-auto">
           We'll reply within a few hours during 7am–6pm CT. If your deadline is urgent, email{" "}
           <a href="mailto:press@chicagofirewatch.com" className="text-fire-red-light hover:underline">
             press@chicagofirewatch.com
@@ -124,10 +123,9 @@ export default function MediaRequestForm() {
     );
   }
 
-  // Match landing page EmailSignup / card styling more closely
   const inputClass =
-    "w-full rounded-lg bg-black/40 border border-fire-red/25 px-3 py-2.5 text-sm text-warm-white placeholder:text-muted/60 focus:outline-none focus:border-fire-red/50";
-  const labelClass = "block text-xs uppercase tracking-wider text-muted mb-1.5";
+    "w-full rounded-lg bg-black/40 border border-fire-red/25 px-3 py-2.5 text-base text-warm-white placeholder:text-muted/60 focus:outline-none focus:border-fire-red/50";
+  const labelClass = "block text-sm uppercase tracking-wider text-muted mb-1.5";
 
   return (
     <form
@@ -226,9 +224,9 @@ export default function MediaRequestForm() {
         <span className={labelClass}>
           Assets wanted <span className="text-fire-red-light">*</span> (select at least one)
         </span>
-        <div className="space-y-2 mt-1">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-1">
           {ASSET_OPTIONS.map((asset) => (
-            <label key={asset} className="flex items-center gap-2 text-sm text-warm-white cursor-pointer">
+            <label key={asset} className="flex items-center gap-2 text-base text-warm-white cursor-pointer">
               <input
                 type="checkbox"
                 checked={assets.includes(asset)}
@@ -284,7 +282,7 @@ export default function MediaRequestForm() {
         />
       </div>
 
-      <label className="flex items-start gap-2 text-sm text-warm-white cursor-pointer">
+      <label className="flex items-start gap-2 text-base text-warm-white cursor-pointer">
         <input
           type="checkbox"
           required
@@ -299,7 +297,7 @@ export default function MediaRequestForm() {
       </label>
 
       {error && (
-        <p className="text-sm text-fire-red-light" role="alert">
+        <p className="text-base text-fire-red-light" role="alert">
           {error}
         </p>
       )}
@@ -307,7 +305,7 @@ export default function MediaRequestForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full sm:w-auto px-6 py-3 rounded-lg bg-fire-red hover:bg-fire-red-light disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold text-sm transition-colors"
+        className="w-full sm:w-auto px-6 py-3 rounded-lg bg-fire-red hover:bg-fire-red-light disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold text-base transition-colors"
       >
         {loading ? "Sending…" : "Submit media request"}
       </button>
