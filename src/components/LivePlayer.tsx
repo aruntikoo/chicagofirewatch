@@ -118,7 +118,7 @@ export default function LivePlayer() {
     }
   }
 
-  async function fetchStatus(): Promise<LiveStatus> {
+  async function fetchStatus(opts?: { recover?: boolean }): Promise<LiveStatus> {
     const windowOpen = isLiveWindowNow();
     setInLiveWindow(windowOpen);
     try {
@@ -128,7 +128,7 @@ export default function LivePlayer() {
       const prev = statusRef.current;
       const changed = prev.live !== next.live || prev.videoId !== next.videoId;
       setStatus(next);
-      if (changed) setPlayerFailed(false);
+      if (changed || opts?.recover) setPlayerFailed(false);
       lastCheckRef.current = Date.now();
       return next;
     } catch {
@@ -155,7 +155,7 @@ export default function LivePlayer() {
       if (cancelledRef.current) return;
       const windowOpen = isLiveWindowNow();
       setInLiveWindow(windowOpen);
-      await fetchStatus();
+      await fetchStatus({ recover: true });
       if (cancelledRef.current) return;
       pollTimerRef.current = window.setTimeout(
         poll,
