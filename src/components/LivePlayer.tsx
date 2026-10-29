@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Maximize, Volume2, VolumeX, Heart, Youtube } from "lucide-react";
 import PresenceCounter from "./PresenceCounter";
 import RecruitingCrmBanner from "./RecruitingCrmBanner";
@@ -16,11 +16,45 @@ const ORIGIN = "https://www.chicagofirewatch.com";
 const SITE_STILL = "/images/mcdonalds-park-cam.jpg";
 const POLL_LIVE_WINDOW_MS = 60_000;
 const POLL_OFF_HOURS_MS = 15 * 60_000;
+const STUCK_MS = 20_000;
+const RELOAD_COOLDOWN_MS = 2 * 60_000;
+const VISIBILITY_DEBOUNCE_MS = 10_000;
+const PLAYER_ID = "yt-live-player";
+
+const YT_UNSTARTED = -1;
+const YT_PLAYING = 1;
+const YT_BUFFERING = 3;
 
 type LiveStatus = {
   live: boolean;
   videoId: string | null;
 };
+
+type YTPlayer = {
+  destroy: () => void;
+  mute: () => void;
+  unMute: () => void;
+  getPlayerState: () => number;
+};
+
+declare global {
+  interface Window {
+    YT?: {
+      Player: new (
+        id: string,
+        options: {
+          events?: {
+            onReady?: (event: { target: YTPlayer }) => void;
+            onError?: (event: { data: number }) => void;
+            onStateChange?: (event: { data: number }) => void;
+          };
+        }
+      ) => YTPlayer;
+      PlayerState?: Record<string, number>;
+    };
+    onYouTubeIframeAPIReady?: () => void;
+  }
+}
 
 function isLiveWindowNow(): boolean {
   const hourText = new Intl.DateTimeFormat("en-US", {
@@ -32,49 +66,195 @@ function isLiveWindowNow(): boolean {
   return hour >= 7 && hour < 18;
 }
 
+function normalizeStatus(data: LiveStatus): LiveStatus {
+  return {
+    live: Boolean(data.live && data.videoId),
+    videoId: data.videoId ?? null,
+  };
+}
+
+function loadYouTubeApi(): Promise<void> {
+  if (typeof window === "undefined") return Promise.resolve();
+  if (window.YT?.Player) return Promise.resolve();
+  return new Promise((resolve) => {
+    const existing = document.getElementById("youtube-iframe-api");
+    if (!existing) {
+      const script = document.createElement("script");
+      script.id = "youtube-iframe-api";
+      script.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(script);
+    }
+    const previous = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => {
+      previous?.();
+      resolve();
+    };
+    if (window.YT?.Player) resolve();
+  });
+}
+
 export default function LivePlayer() {
   const [muted, setMuted] = useState(true);
   const [inLiveWindow, setInLiveWindow] = useState(isLiveWindowNow);
   const [status, setStatus] = useState<LiveStatus>({ live: false, videoId: null });
+  const [playerFailed, setPlayerFailed] = useState(false);
+  const [embedNonce, setEmbedNonce] = useState(0);
+
+  const statusRef = useRef(status);
+  statusRef.current = status;
+  const mutedRef = useRef(muted);
+  mutedRef.current = muted;
+  const lastCheckRef = useRef(0);
+  const lastReloadRef = useRef(0);
+  const playerRef = useRef<YTPlayer | null>(null);
+  const stuckTimerRef = useRef<number | null>(null);
+  const pollTimerRef = useRef<number | null>(null);
+  const cancelledRef = useRef(false);
+
+  function clearStuckTimer() {
+    if (stuckTimerRef.current) {
+      window.clearTimeout(stuckTimerRef.current);
+      stuckTimerRef.current = null;
+    }
+  }
+
+  async function fetchStatus(): Promise<LiveStatus> {
+    const windowOpen = isLiveWindowNow();
+    setInLiveWindow(windowOpen);
+    try {
+      const res = await fetch("/api/live-status", { cache: "no-store" });
+      if (!res.ok) return statusRef.current;
+      const next = normalizeStatus((await res.json()) as LiveStatus);
+      const prev = statusRef.current;
+      const changed = prev.live !== next.live || prev.videoId !== next.videoId;
+      setStatus(next);
+      if (changed) setPlayerFailed(false);
+      lastCheckRef.current = Date.now();
+      return next;
+    } catch {
+      return statusRef.current;
+    }
+  }
+
+  async function handlePlayerProblem() {
+    setPlayerFailed(true);
+    const next = await fetchStatus();
+    if (!next.live || !next.videoId) return;
+    const now = Date.now();
+    if (now - lastReloadRef.current >= RELOAD_COOLDOWN_MS) {
+      lastReloadRef.current = now;
+      setPlayerFailed(false);
+      setEmbedNonce((n) => n + 1);
+    }
+  }
 
   useEffect(() => {
-    let cancelled = false;
-    let timer: number | undefined;
+    cancelledRef.current = false;
 
-    async function refresh() {
+    async function poll() {
+      if (cancelledRef.current) return;
       const windowOpen = isLiveWindowNow();
-      if (!cancelled) setInLiveWindow(windowOpen);
-      try {
-        const res = await fetch("/api/live-status", { cache: "no-store" });
-        if (res.ok) {
-          const data = (await res.json()) as LiveStatus;
-          if (!cancelled) {
-            setStatus({
-              live: Boolean(data.live && data.videoId),
-              videoId: data.videoId ?? null,
-            });
-          }
-        }
-      } catch {
-        // keep last known status
-      }
-      if (!cancelled) {
-        timer = window.setTimeout(refresh, windowOpen ? POLL_LIVE_WINDOW_MS : POLL_OFF_HOURS_MS);
-      }
+      setInLiveWindow(windowOpen);
+      await fetchStatus();
+      if (cancelledRef.current) return;
+      pollTimerRef.current = window.setTimeout(
+        poll,
+        windowOpen ? POLL_LIVE_WINDOW_MS : POLL_OFF_HOURS_MS
+      );
     }
 
-    refresh();
+    poll();
     return () => {
-      cancelled = true;
-      if (timer) window.clearTimeout(timer);
+      cancelledRef.current = true;
+      if (pollTimerRef.current) window.clearTimeout(pollTimerRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const showLive = status.live && Boolean(status.videoId);
+  useEffect(() => {
+    function recheck() {
+      const now = Date.now();
+      if (now - lastCheckRef.current < VISIBILITY_DEBOUNCE_MS) return;
+      lastCheckRef.current = now;
+      void fetchStatus();
+    }
+
+    function onVisibility() {
+      if (document.visibilityState === "visible") recheck();
+    }
+
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("focus", recheck);
+    window.addEventListener("online", recheck);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("focus", recheck);
+      window.removeEventListener("online", recheck);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!status.live || !status.videoId || playerFailed) {
+      playerRef.current?.destroy();
+      playerRef.current = null;
+      clearStuckTimer();
+      return;
+    }
+
+    let cancelled = false;
+    loadYouTubeApi().then(() => {
+      if (cancelled || !window.YT?.Player) return;
+      const node = document.getElementById(PLAYER_ID);
+      if (!node) return;
+      playerRef.current?.destroy();
+      playerRef.current = new window.YT.Player(PLAYER_ID, {
+        events: {
+          onReady: (event) => {
+            if (mutedRef.current) event.target.mute();
+            else event.target.unMute();
+          },
+          onError: () => {
+            void handlePlayerProblem();
+          },
+          onStateChange: (event) => {
+            if (event.data === YT_PLAYING) {
+              clearStuckTimer();
+              return;
+            }
+            if (event.data === YT_UNSTARTED || event.data === YT_BUFFERING) {
+              clearStuckTimer();
+              stuckTimerRef.current = window.setTimeout(() => {
+                void handlePlayerProblem();
+              }, STUCK_MS);
+            }
+          },
+        },
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      clearStuckTimer();
+      playerRef.current?.destroy();
+      playerRef.current = null;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status.live, status.videoId, embedNonce, playerFailed]);
+
+  function toggleMute() {
+    const next = !muted;
+    setMuted(next);
+    if (next) playerRef.current?.mute();
+    else playerRef.current?.unMute();
+  }
+
+  const showLive = status.live && Boolean(status.videoId) && !playerFailed;
   const youtubeEmbedSrc = showLive
-    ? `https://www.youtube.com/embed/${status.videoId}?autoplay=1&mute=${muted ? 1 : 0}&playsinline=1&rel=0&origin=${encodeURIComponent(ORIGIN)}`
+    ? `https://www.youtube.com/embed/${status.videoId}?autoplay=1&mute=1&playsinline=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(ORIGIN)}`
     : "";
   const youtubeWatchUrl = withUtm(`${YOUTUBE_HANDLE_URL}/live`);
+  const showTrouble = playerFailed || inLiveWindow;
 
   return (
     <section id="live" className="relative w-full">
@@ -94,7 +274,7 @@ export default function LivePlayer() {
                   <>
                     <span className="w-2.5 h-2.5 rounded-full bg-muted" />
                     <span className="text-sm font-semibold uppercase tracking-widest text-muted">
-                      {inLiveWindow ? "Camera trouble" : "Cam offline"}
+                      {showTrouble ? "Camera trouble" : "Cam offline"}
                     </span>
                   </>
                 )}
@@ -118,7 +298,8 @@ export default function LivePlayer() {
           <div className="aspect-video relative bg-gradient-to-br from-charcoal to-black">
             {showLive ? (
               <iframe
-                key={status.videoId ?? "live"}
+                id={PLAYER_ID}
+                key={`${status.videoId}-${embedNonce}`}
                 className="absolute inset-0 w-full h-full"
                 src={youtubeEmbedSrc}
                 title="Chicago Fire Stadium Live Construction"
@@ -133,7 +314,7 @@ export default function LivePlayer() {
               >
                 <div className="absolute inset-0 bg-black/70" />
                 <div className="relative z-10 flex flex-col items-center gap-3 px-6 text-center max-w-lg">
-                  {inLiveWindow ? (
+                  {showTrouble ? (
                     <>
                       <p className="text-xs font-semibold uppercase tracking-widest text-muted">
                         Camera trouble
@@ -185,7 +366,7 @@ export default function LivePlayer() {
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-between opacity-0 hover:opacity-100 transition-opacity">
                 <div className="flex items-center gap-3">
                   <button
-                    onClick={() => setMuted(!muted)}
+                    onClick={toggleMute}
                     className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white"
                   >
                     {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
