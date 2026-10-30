@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Maximize, Volume2, VolumeX, Heart, Youtube } from "lucide-react";
+import { Maximize, Play, Volume2, VolumeX, Heart, Youtube } from "lucide-react";
 import PresenceCounter from "./PresenceCounter";
 import RecruitingCrmBanner from "./RecruitingCrmBanner";
 import SponsorBanner from "./SponsorBanner";
@@ -17,9 +17,11 @@ const SITE_STILL = "/images/mcdonalds-park-cam.jpg";
 const POLL_LIVE_WINDOW_MS = 60_000;
 const POLL_OFF_HOURS_MS = 15 * 60_000;
 const STUCK_MS = 20_000;
+const UNSTARTED_TAP_MS = 5_000;
 const RELOAD_COOLDOWN_MS = 2 * 60_000;
 const VISIBILITY_DEBOUNCE_MS = 10_000;
 const PLAYER_ID = "yt-live-player";
+const REAL_ERROR_CODES = new Set([2, 5, 100, 101, 150]);
 
 const YT_UNSTARTED = -1;
 const YT_PLAYING = 1;
@@ -34,6 +36,7 @@ type YTPlayer = {
   destroy: () => void;
   mute: () => void;
   unMute: () => void;
+  playVideo: () => void;
   getPlayerState: () => number;
 };
 
@@ -99,6 +102,7 @@ export default function LivePlayer() {
   const [status, setStatus] = useState<LiveStatus>({ live: false, videoId: null });
   const [playerFailed, setPlayerFailed] = useState(false);
   const [embedNonce, setEmbedNonce] = useState(0);
+  const [needsTap, setNeedsTap] = useState(false);
 
   const statusRef = useRef(status);
   statusRef.current = status;
@@ -108,6 +112,8 @@ export default function LivePlayer() {
   const lastReloadRef = useRef(0);
   const playerRef = useRef<YTPlayer | null>(null);
   const stuckTimerRef = useRef<number | null>(null);
+  const unstartedTimerRef = useRef<number | null>(null);
+  const hasStartedRef = useRef(false);
   const pollTimerRef = useRef<number | null>(null);
   const cancelledRef = useRef(false);
 
@@ -115,6 +121,13 @@ export default function LivePlayer() {
     if (stuckTimerRef.current) {
       window.clearTimeout(stuckTimerRef.current);
       stuckTimerRef.current = null;
+    }
+  }
+
+  function clearUnstartedTimer() {
+    if (unstartedTimerRef.current) {
+      window.clearTimeout(unstartedTimerRef.current);
+      unstartedTimerRef.current = null;
     }
   }
 
@@ -138,6 +151,7 @@ export default function LivePlayer() {
 
   async function handlePlayerProblem() {
     setPlayerFailed(true);
+    setNeedsTap(false);
     const next = await fetchStatus();
     if (!next.live || !next.videoId) return;
     const now = Date.now();
@@ -199,9 +213,13 @@ export default function LivePlayer() {
       playerRef.current?.destroy();
       playerRef.current = null;
       clearStuckTimer();
+      clearUnstartedTimer();
+      hasStartedRef.current = false;
       return;
     }
 
+    hasStartedRef.current = false;
+    setNeedsTap(false);
     let cancelled = false;
     loadYouTubeApi().then(() => {
       if (cancelled || !window.YT?.Player) return;
@@ -214,19 +232,36 @@ export default function LivePlayer() {
             if (mutedRef.current) event.target.mute();
             else event.target.unMute();
           },
-          onError: () => {
-            void handlePlayerProblem();
+          onError: (event) => {
+            console.warn("YouTube player error", event.data);
+            if (REAL_ERROR_CODES.has(event.data)) {
+              void handlePlayerProblem();
+            }
           },
           onStateChange: (event) => {
             if (event.data === YT_PLAYING) {
+              hasStartedRef.current = true;
+              setNeedsTap(false);
               clearStuckTimer();
+              clearUnstartedTimer();
               return;
             }
-            if (event.data === YT_UNSTARTED || event.data === YT_BUFFERING) {
+            if (event.data === YT_BUFFERING) {
+              hasStartedRef.current = true;
+              setNeedsTap(false);
+              clearUnstartedTimer();
               clearStuckTimer();
               stuckTimerRef.current = window.setTimeout(() => {
-                void handlePlayerProblem();
+                if (hasStartedRef.current) void handlePlayerProblem();
               }, STUCK_MS);
+              return;
+            }
+            if (event.data === YT_UNSTARTED && !hasStartedRef.current) {
+              clearStuckTimer();
+              clearUnstartedTimer();
+              unstartedTimerRef.current = window.setTimeout(() => {
+                if (!hasStartedRef.current) setNeedsTap(true);
+              }, UNSTARTED_TAP_MS);
             }
           },
         },
@@ -236,6 +271,7 @@ export default function LivePlayer() {
     return () => {
       cancelled = true;
       clearStuckTimer();
+      clearUnstartedTimer();
       playerRef.current?.destroy();
       playerRef.current = null;
     };
@@ -247,6 +283,11 @@ export default function LivePlayer() {
     setMuted(next);
     if (next) playerRef.current?.mute();
     else playerRef.current?.unMute();
+  }
+
+  function tapToPlay() {
+    playerRef.current?.playVideo();
+    setNeedsTap(false);
   }
 
   const showLive = status.live && Boolean(status.videoId) && !playerFailed;
@@ -297,16 +338,31 @@ export default function LivePlayer() {
         <div className="relative steel-border rounded-xl overflow-hidden bg-black shadow-2xl">
           <div className="aspect-video relative bg-gradient-to-br from-charcoal to-black">
             {showLive ? (
-              <iframe
-                id={PLAYER_ID}
-                key={`${status.videoId}-${embedNonce}`}
-                className="absolute inset-0 w-full h-full"
-                src={youtubeEmbedSrc}
-                title="Chicago Fire Stadium Live Construction"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              />
+              <>
+                <iframe
+                  id={PLAYER_ID}
+                  key={`${status.videoId}-${embedNonce}`}
+                  className="absolute inset-0 w-full h-full"
+                  src={youtubeEmbedSrc}
+                  title="Chicago Fire Stadium Live Construction"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                />
+                {needsTap && (
+                  <button
+                    onClick={tapToPlay}
+                    className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/50"
+                  >
+                    <div className="w-20 h-20 rounded-full bg-fire-red flex items-center justify-center shadow-lg shadow-fire-red/40">
+                      <Play className="w-8 h-8 text-white fill-white ml-1" />
+                    </div>
+                    <span className="mt-4 text-warm-white font-semibold text-lg tracking-wide">
+                      Tap to watch live
+                    </span>
+                  </button>
+                )}
+              </>
             ) : (
               <div
                 className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center"
