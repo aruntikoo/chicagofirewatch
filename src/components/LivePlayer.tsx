@@ -300,9 +300,121 @@ export default function LivePlayer() {
   return (
     <section id="live" className="relative w-full">
       <div className="w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
-          <div>
-            <div className="flex flex-wrap items-center gap-3 mb-2">
+        <div className="grid lg:grid-cols-[1.6fr_1fr] gap-6 lg:gap-10 items-center">
+          {/* Player */}
+          <div className="relative steel-border rounded-xl overflow-hidden bg-black shadow-2xl">
+            <div className="aspect-video relative bg-gradient-to-br from-charcoal to-black">
+              {showLive ? (
+                <>
+                  <iframe
+                    id={PLAYER_ID}
+                    key={`${status.videoId}-${embedNonce}`}
+                    className="absolute inset-0 w-full h-full"
+                    src={youtubeEmbedSrc}
+                    title="Chicago Fire Stadium Live Construction"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                  {needsTap && (
+                    <button
+                      onClick={tapToPlay}
+                      className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/50"
+                    >
+                      <div className="w-20 h-20 rounded-full bg-fire-red flex items-center justify-center shadow-lg shadow-fire-red/40">
+                        <Play className="w-8 h-8 text-white fill-white ml-1" />
+                      </div>
+                      <span className="mt-4 text-warm-white font-semibold text-lg tracking-wide">
+                        Tap to watch live
+                      </span>
+                    </button>
+                  )}
+                </>
+              ) : (
+                <div
+                  className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center"
+                  style={{ backgroundImage: `url('${SITE_STILL}')` }}
+                >
+                  <div className="absolute inset-0 bg-black/70" />
+                  <div className="relative z-10 flex flex-col items-center gap-3 px-6 text-center max-w-lg">
+                    {showTrouble ? (
+                      <>
+                        <p className="text-xs font-semibold uppercase tracking-widest text-muted">
+                          Camera trouble
+                        </p>
+                        <p className="text-2xl sm:text-3xl font-bold text-warm-white">
+                          We’re working on it, back soon
+                        </p>
+                        <p className="text-sm text-warm-white/75">
+                          The cam should be live 7:00 AM–6:00 PM CT. The feed is down right now.
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-xs font-semibold uppercase tracking-widest text-muted">
+                          Cam offline
+                        </p>
+                        <p className="text-2xl sm:text-3xl font-bold text-warm-white">
+                          Back at 7:00 AM Central
+                        </p>
+                        <p className="text-sm text-warm-white/75">
+                          Live view runs 7:00 AM–6:00 PM CT while crews are on site.
+                        </p>
+                      </>
+                    )}
+                    <div className="mt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
+                      <a
+                        href={REPLAY_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center px-5 py-2.5 rounded-lg border border-white/25 bg-black/40 hover:bg-black/60 text-warm-white text-sm font-semibold transition-colors"
+                      >
+                        Watch yesterday's replay
+                      </a>
+                      <a
+                        href={SUPPORT_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-fire-red hover:bg-fire-red-light text-white text-sm font-semibold transition-colors"
+                      >
+                        <Heart className="w-4 h-4 fill-current" />
+                        Support the Cam
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {showLive && (
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-between opacity-0 hover:opacity-100 transition-opacity">
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={toggleMute}
+                      className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white"
+                    >
+                      {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+                    </button>
+                    <span className="text-xs text-white/80 font-medium">
+                      LIVE • The 78 Construction Site
+                    </span>
+                  </div>
+                  <a
+                    href={youtubeWatchUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white"
+                    title="Open on YouTube"
+                  >
+                    <Maximize size={18} />
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Title + actions */}
+          <div className="flex flex-col justify-center">
+            <div className="flex flex-wrap items-center gap-3 mb-3">
               <div className="flex items-center gap-2">
                 {showLive ? (
                   <>
@@ -322,165 +434,54 @@ export default function LivePlayer() {
               </div>
               {showLive && <PresenceCounter />}
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-warm-white">
+
+            <h1 className="text-3xl sm:text-4xl lg:text-4xl xl:text-5xl font-bold tracking-tight text-warm-white leading-tight">
               McDonald's Park
               <span className="block text-fire-red-light mt-1">
                 Chicago Fire Stadium Construction Live
               </span>
             </h1>
-            <p className="mt-3 text-muted max-w-2xl text-base sm:text-lg">
+
+            <p className="mt-3 text-muted text-base sm:text-lg">
               Independent fan view of McDonald's Park, the new Chicago Fire FC
               stadium rising at The 78. Watch steel, brick, and glass take shape in real time.
             </p>
-          </div>
-        </div>
 
-        <div className="relative steel-border rounded-xl overflow-hidden bg-black shadow-2xl">
-          <div className="aspect-video relative bg-gradient-to-br from-charcoal to-black">
-            {showLive ? (
-              <>
-                <iframe
-                  id={PLAYER_ID}
-                  key={`${status.videoId}-${embedNonce}`}
-                  className="absolute inset-0 w-full h-full"
-                  src={youtubeEmbedSrc}
-                  title="Chicago Fire Stadium Live Construction"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                />
-                {needsTap && (
-                  <button
-                    onClick={tapToPlay}
-                    className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/50"
-                  >
-                    <div className="w-20 h-20 rounded-full bg-fire-red flex items-center justify-center shadow-lg shadow-fire-red/40">
-                      <Play className="w-8 h-8 text-white fill-white ml-1" />
-                    </div>
-                    <span className="mt-4 text-warm-white font-semibold text-lg tracking-wide">
-                      Tap to watch live
-                    </span>
-                  </button>
-                )}
-              </>
-            ) : (
-              <div
-                className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center"
-                style={{ backgroundImage: `url('${SITE_STILL}')` }}
+            <div className="mt-5 flex flex-col sm:flex-row gap-3">
+              <a
+                href={SUPPORT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-fire-red hover:bg-fire-red-light text-white font-semibold text-sm sm:text-base shadow-lg shadow-fire-red/30 transition-colors"
               >
-                <div className="absolute inset-0 bg-black/70" />
-                <div className="relative z-10 flex flex-col items-center gap-3 px-6 text-center max-w-lg">
-                  {showTrouble ? (
-                    <>
-                      <p className="text-xs font-semibold uppercase tracking-widest text-muted">
-                        Camera trouble
-                      </p>
-                      <p className="text-2xl sm:text-3xl font-bold text-warm-white">
-                        We’re working on it, back soon
-                      </p>
-                      <p className="text-sm text-warm-white/75">
-                        The cam should be live 7:00 AM–6:00 PM CT. The feed is down right now.
-                      </p>
-                    </>
-                  ) : (
-                    <>
-                      <p className="text-xs font-semibold uppercase tracking-widest text-muted">
-                        Cam offline
-                      </p>
-                      <p className="text-2xl sm:text-3xl font-bold text-warm-white">
-                        Back at 7:00 AM Central
-                      </p>
-                      <p className="text-sm text-warm-white/75">
-                        Live view runs 7:00 AM–6:00 PM CT while crews are on site.
-                      </p>
-                    </>
-                  )}
-                  <div className="mt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
-                    <a
-                      href={REPLAY_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center px-5 py-2.5 rounded-lg border border-white/25 bg-black/40 hover:bg-black/60 text-warm-white text-sm font-semibold transition-colors"
-                    >
-                      Watch yesterday's replay
-                    </a>
-                    <a
-                      href={SUPPORT_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-fire-red hover:bg-fire-red-light text-white text-sm font-semibold transition-colors"
-                    >
-                      <Heart className="w-4 h-4 fill-current" />
-                      Support the Cam
-                    </a>
-                  </div>
-                </div>
-              </div>
-            )}
+                <Heart className="w-4 h-4 fill-current" />
+                Support the Cam
+              </a>
+              <a
+                href={SUBSCRIBE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-white/25 bg-black/40 hover:bg-black/60 text-warm-white font-semibold text-sm sm:text-base transition-colors"
+              >
+                <Youtube className="w-4 h-4" />
+                Subscribe on YouTube
+              </a>
+            </div>
 
             {showLive && (
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-between opacity-0 hover:opacity-100 transition-opacity">
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={toggleMute}
-                    className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white"
-                  >
-                    {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-                  </button>
-                  <span className="text-xs text-white/80 font-medium">
-                    LIVE • The 78 Construction Site
-                  </span>
-                </div>
+              <p className="mt-3 text-xs text-muted">
+                Stream not loading?{" "}
                 <a
                   href={youtubeWatchUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white"
-                  title="Open on YouTube"
+                  className="text-fire-red-light hover:underline"
                 >
-                  <Maximize size={18} />
+                  Open on YouTube
                 </a>
-              </div>
+              </p>
             )}
           </div>
-        </div>
-
-        {showLive && (
-          <p className="mt-3 text-center text-xs text-muted">
-            Stream not loading?{" "}
-            <a
-              href={youtubeWatchUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-fire-red-light hover:underline"
-            >
-              Open on YouTube
-            </a>
-          </p>
-        )}
-
-        <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-          <a
-            href={SUPPORT_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-fire-red hover:bg-fire-red-light text-white font-semibold text-sm sm:text-base shadow-lg shadow-fire-red/30 transition-colors"
-          >
-            <Heart className="w-4 h-4 fill-current" />
-            Support the Cam
-          </a>
-          <a
-            href={SUBSCRIBE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-white/25 bg-black/40 hover:bg-black/60 text-warm-white font-semibold text-sm sm:text-base transition-colors"
-          >
-            <Youtube className="w-4 h-4" />
-            Subscribe on YouTube
-          </a>
-          <p className="text-sm text-muted text-center sm:text-left">
-            Help keep the live view running for Fire fans.
-          </p>
         </div>
 
         {SPONSORSHIPS_ENABLED ? <SponsorBanner /> : <RecruitingCrmBanner />}
