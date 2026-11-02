@@ -1,8 +1,7 @@
 import Header from "@/components/Header";
 import LivePlayer from "@/components/LivePlayer";
-import WeeklyProgress from "@/components/WeeklyProgress";
+import HorizontalTimeline from "@/components/HorizontalTimeline";
 import NewsFeed from "@/components/NewsFeed";
-import Timeline from "@/components/Timeline";
 import Gallery from "@/components/Gallery";
 import CommunityShop from "@/components/CommunityShop";
 import Footer from "@/components/Footer";
@@ -13,10 +12,9 @@ export default function Home() {
       <Header />
       <main className="flex-1 pt-16">
         <LivePlayer />
-        <WeeklyProgress />
-        <NewsFeed />
+        <HorizontalTimeline />
         <CommunityShop />
-        <Timeline />
+        <NewsFeed />
         <Gallery />
       </main>
       <Footer />
