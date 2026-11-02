@@ -17,7 +17,7 @@ export default function WeeklyProgress() {
           </p>
         </div>
 
-        <div className="steel-border rounded-xl overflow-hidden bg-black shadow-2xl max-w-4xl mx-auto">
+        <div className="steel-border rounded-xl overflow-hidden bg-black shadow-2xl">
           <div className="aspect-video relative">
             <iframe
               className="absolute inset-0 w-full h-full"
@@ -30,7 +30,7 @@ export default function WeeklyProgress() {
           </div>
         </div>
 
-        <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 max-w-4xl mx-auto">
+        <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <a
             href={MORE_TIMELAPSES_URL}
             target="_blank"
