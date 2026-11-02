@@ -1,7 +1,7 @@
 import { getNewsFeed, formatRelativeTime } from "@/lib/news";
 import { getPodcastEpisodes } from "@/lib/podcast";
 import type { NewsItem } from "@/data/pinnedNews";
-import { ExternalLink, Pin } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import PodcastEpisodeList from "@/components/PodcastEpisodeList";
 
 function TagBadge({ tag }: { tag?: NewsItem["tag"] }) {
@@ -19,28 +19,19 @@ function TagBadge({ tag }: { tag?: NewsItem["tag"] }) {
   );
 }
 
-function NewsRow({ item, pinned }: { item: NewsItem; pinned?: boolean }) {
+function NewsRow({ item }: { item: NewsItem }) {
   return (
     <a
       href={item.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex gap-2.5 sm:gap-3 items-start rounded-lg border border-fire-red/15 bg-charcoal/60 hover:border-fire-red/35 hover:bg-charcoal/90 px-3 sm:px-4 py-2.5 sm:py-3 transition-colors"
+      className="group flex gap-2.5 items-start rounded-lg border border-fire-red/15 bg-charcoal/60 hover:border-fire-red/35 hover:bg-charcoal/90 px-3 py-2.5 transition-colors"
     >
-      <div className="mt-0.5 shrink-0 text-fire-red-light/80">
-        {pinned ? (
-          <Pin className="w-4 h-4" aria-hidden />
-        ) : (
-          <ExternalLink className="w-4 h-4 opacity-50 group-hover:opacity-100" aria-hidden />
-        )}
+      <div className="mt-0.5 shrink-0 text-fire-red-light/60">
+        <ExternalLink className="w-4 h-4 opacity-50 group-hover:opacity-100" aria-hidden />
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2 mb-1">
-          {pinned && (
-            <span className="text-[10px] uppercase tracking-widest font-semibold text-fire-red-light">
-              Pinned
-            </span>
-          )}
           <TagBadge tag={item.tag} />
         </div>
         <p className="text-sm font-medium text-warm-white group-hover:text-fire-red-light leading-snug">
@@ -56,12 +47,12 @@ function NewsRow({ item, pinned }: { item: NewsItem; pinned?: boolean }) {
 }
 
 export default async function NewsFeed() {
-  const [{ pinned, latest }, podcast] = await Promise.all([
+  const [{ latest }, podcast] = await Promise.all([
     getNewsFeed(),
     getPodcastEpisodes(),
   ]);
 
-  const hasNews = pinned.length > 0 || latest.length > 0;
+  const hasNews = latest.length > 0;
   const hasPodcast = podcast.episodes.length > 0;
 
   if (!hasNews && !hasPodcast) {
@@ -69,34 +60,20 @@ export default async function NewsFeed() {
   }
 
   return (
-    <section id="news" className="relative w-full border-t border-fire-red/10">
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-8 md:py-10">
-        <div
-          className={
-            hasNews && hasPodcast
-              ? "grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-10"
-              : ""
-          }
-        >
+    <section id="news" className="relative w-full border-t border-fire-red/10 bg-charcoal/30">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 max-w-6xl mx-auto">
           {hasNews && (
-            <div className={hasPodcast ? "lg:col-span-3" : ""}>
-              <div className="mb-4">
-                <p className="text-xs font-semibold uppercase tracking-widest text-fire-red-light mb-1">
-                  Fire & Stadium
-                </p>
+            <div className="flex flex-col h-[420px]">
+              <div className="mb-3 shrink-0">
                 <h2 className="text-2xl sm:text-3xl font-bold text-warm-white tracking-tight">
                   In the news
                 </h2>
-                <p className="mt-1 text-sm text-muted max-w-xl">
-                  Club updates and McDonald’s Park / The 78 coverage — pinned
-                  milestones stay up for everyone.
+                <p className="mt-1 text-sm text-muted">
+                  Club updates and McDonald’s Park / The 78 coverage — most recent first
                 </p>
               </div>
-
-              <div className="flex flex-col gap-2">
-                {pinned.map((item) => (
-                  <NewsRow key={item.id} item={item} pinned />
-                ))}
+              <div className="flex-1 overflow-y-auto pr-2 space-y-2 scrollbar-thin">
                 {latest.map((item) => (
                   <NewsRow key={item.id} item={item} />
                 ))}
@@ -105,17 +82,14 @@ export default async function NewsFeed() {
           )}
 
           {hasPodcast && (
-            <div className={hasNews ? "lg:col-span-2" : ""}>
-              <div className="flex flex-wrap items-end justify-between gap-2 mb-4">
+            <div className="flex flex-col h-[420px]">
+              <div className="mb-3 shrink-0 flex flex-wrap items-end justify-between gap-2">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-fire-red-light mb-1">
-                    Local podcast
-                  </p>
-                  <h3 className="text-xl sm:text-2xl font-bold text-warm-white tracking-tight">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-warm-white tracking-tight">
                     {podcast.showName}
                   </h3>
                   <p className="mt-1 text-sm text-muted">
-                    Play recent episodes here. Full archive on the show’s site.
+                    Most recent episodes (last ~2 months)
                   </p>
                 </div>
                 <a
@@ -127,16 +101,17 @@ export default async function NewsFeed() {
                   All episodes →
                 </a>
               </div>
-
-              <PodcastEpisodeList
-                showName={podcast.showName}
-                episodes={podcast.episodes}
-              />
+              <div className="flex-1 overflow-y-auto pr-2">
+                <PodcastEpisodeList
+                  showName={podcast.showName}
+                  episodes={podcast.episodes.slice(0, 8)}
+                />
+              </div>
             </div>
           )}
         </div>
 
-        <p className="mt-5 text-[11px] text-muted/70">
+        <p className="mt-6 text-[11px] text-muted/70 text-center">
           Headlines link to original publishers. Podcast audio is streamed from
           the publisher’s feed. Independent fan site — not affiliated with
           Chicago Fire FC, MLS, or the podcast creators.
