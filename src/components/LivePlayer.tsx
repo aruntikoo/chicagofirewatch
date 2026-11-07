@@ -471,9 +471,9 @@ export default function LivePlayer() {
               </a>
             </div>
 
-            {showLive && (
+            {(
               <p className="mt-3 text-xs text-muted">
-                Stream not loading?{" "}
+                {showLive ? "Stream not loading?" : "Check the stream directly:"}{" "}
                 <a
                   href={youtubeWatchUrl}
                   target="_blank"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X, Flame } from "lucide-react";
 import Link from "next/link";
 import { SPONSORSHIPS_ENABLED } from "@/lib/features";
@@ -18,6 +18,23 @@ const navItems = allNavItems.filter((item) => SPONSORSHIPS_ENABLED || item.href 
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [live, setLive] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const check = async () => {
+      try {
+        const res = await fetch("/api/live-status", { cache: "no-store" });
+        const data = await res.json();
+        if (!cancelled) setLive(Boolean(data.live && data.videoId));
+      } catch {
+        if (!cancelled) setLive(false);
+      }
+    };
+    check();
+    const id = setInterval(check, 60000);
+    return () => { cancelled = true; clearInterval(id); };
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-charcoal/95 backdrop-blur-md border-b border-fire-red/20">
@@ -52,11 +69,11 @@ export default function Header() {
           <div className="flex items-center gap-3">
             <Link
               href="/#live"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-fire-red/20 border border-fire-red/40 hover:bg-fire-red/30 transition-colors"
+              className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-colors ${live ? "bg-fire-red/20 border border-fire-red/40 hover:bg-fire-red/30" : "bg-white/5 border border-white/15 hover:bg-white/10"}`}
             >
-              <span className="w-2 h-2 rounded-full bg-fire-red live-badge" />
-              <span className="text-xs font-semibold text-fire-red-light uppercase tracking-wide">
-                Live
+              <span className={`w-2 h-2 rounded-full ${live ? "bg-fire-red live-badge" : "bg-muted"}`} />
+              <span className={`text-xs font-semibold uppercase tracking-wide ${live ? "text-fire-red-light" : "text-muted"}`}>
+                {live ? "Live" : "Offline"}
               </span>
             </Link>
 
