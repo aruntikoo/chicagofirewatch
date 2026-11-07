@@ -101,6 +101,8 @@ export default function LivePlayer() {
   const [inLiveWindow, setInLiveWindow] = useState(isLiveWindowNow);
   const [status, setStatus] = useState<LiveStatus>({ live: false, videoId: null });
   const [playerFailed, setPlayerFailed] = useState(false);
+  // False until the first /api/live-status answer, so the prerendered HTML never says "Camera trouble".
+  const [statusChecked, setStatusChecked] = useState(false);
   const [embedNonce, setEmbedNonce] = useState(0);
   const [needsTap, setNeedsTap] = useState(false);
 
@@ -141,6 +143,7 @@ export default function LivePlayer() {
       const prev = statusRef.current;
       const changed = prev.live !== next.live || prev.videoId !== next.videoId;
       setStatus(next);
+      setStatusChecked(true);
       if (changed || opts?.recover) setPlayerFailed(false);
       lastCheckRef.current = Date.now();
       return next;
@@ -295,7 +298,7 @@ export default function LivePlayer() {
     ? `https://www.youtube.com/embed/${status.videoId}?autoplay=1&mute=1&playsinline=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(ORIGIN)}`
     : "";
   const youtubeWatchUrl = withUtm(`${YOUTUBE_HANDLE_URL}/live`);
-  const showTrouble = playerFailed || inLiveWindow;
+  const showTrouble = playerFailed || (inLiveWindow && statusChecked && !showLive);
 
   return (
     <section id="live" className="relative w-full">

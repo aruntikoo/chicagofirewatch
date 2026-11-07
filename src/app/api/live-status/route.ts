@@ -62,7 +62,49 @@ function readLive(player: unknown): LiveStatus {
   return { live: false, videoId: null };
 }
 
+function isLiveWindowNow(): boolean {
+  const hour = parseInt(
+    new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/Chicago",
+      hour: "numeric",
+      hourCycle: "h23",
+    }).format(new Date()),
+    10,
+  );
+  return hour >= 7 && hour < 18;
+}
+
+// The live_stream embed keeps pointing at the last stream after it ends, so
+// confirm with the watch page that YouTube reports this id as live right now.
+async function isLiveNow(videoId: string): Promise<boolean> {
+  try {
+    const res = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (compatible; ChicagoFireWatch/1.0; +https://www.chicagofirewatch.com)",
+        "Accept-Language": "en-US,en;q=0.9",
+      },
+      cache: "no-store",
+    });
+    if (!res.ok) return true; // can't tell; keep the embed result
+    const html = await res.text();
+    if (html.includes('"isLiveNow":false')) return false;
+    return true;
+  } catch {
+    return true;
+  }
+}
+
 async function fetchLiveStatus(): Promise<LiveStatus> {
+  if (!isLiveWindowNow()) return { live: false, videoId: null };
+  const status = await fetchEmbedStatus();
+  if (status.live && status.videoId && !(await isLiveNow(status.videoId))) {
+    return { live: false, videoId: null };
+  }
+  return status;
+}
+
+async function fetchEmbedStatus(): Promise<LiveStatus> {
   const res = await fetch(EMBED_URL, {
     headers: {
       Referer: "https://www.chicagofirewatch.com/",
