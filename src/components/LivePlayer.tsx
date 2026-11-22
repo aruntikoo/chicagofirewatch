@@ -59,14 +59,32 @@ declare global {
   }
 }
 
-function isLiveWindowNow(): boolean {
-  const hourText = new Intl.DateTimeFormat("en-US", {
+function chicagoNow(): { weekday: string; hour: number } {
+  const parts = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/Chicago",
+    weekday: "short",
     hour: "numeric",
     hourCycle: "h23",
-  }).format(new Date());
-  const hour = parseInt(hourText, 10);
+  }).formatToParts(new Date());
+  const weekday = parts.find((p) => p.type === "weekday")?.value ?? "";
+  const hour = parseInt(parts.find((p) => p.type === "hour")?.value ?? "0", 10);
+  return { weekday, hour };
+}
+
+// No stream on Sundays.
+function isLiveWindowNow(): boolean {
+  const { weekday, hour } = chicagoNow();
+  if (weekday === "Sun") return false;
   return hour >= 7 && hour < 18;
+}
+
+// Next start is Monday when it's Sunday or Saturday evening.
+function nextStartLabel(): string {
+  const { weekday, hour } = chicagoNow();
+  if (weekday === "Sun" || (weekday === "Sat" && hour >= 18)) {
+    return "Back Monday at 7:00 AM Central";
+  }
+  return "Back at 7:00 AM Central";
 }
 
 function normalizeStatus(data: LiveStatus): LiveStatus {
@@ -358,10 +376,10 @@ export default function LivePlayer() {
                           Cam offline
                         </p>
                         <p className="text-2xl sm:text-3xl font-bold text-warm-white">
-                          Back at 7:00 AM Central
+                          {nextStartLabel()}
                         </p>
                         <p className="text-sm text-warm-white/75">
-                          Live view runs 7:00 AM–6:00 PM CT while crews are on site.
+                          Live view runs 7:00 AM–6:00 PM CT, Monday–Saturday, while crews are on site. No stream on Sundays.
                         </p>
                       </>
                     )}

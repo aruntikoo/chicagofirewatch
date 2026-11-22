@@ -42,7 +42,7 @@ export default function MediaPage() {
               Media & Licensing — McDonald's Park Construction Footage
             </h1>
             <p className="text-muted text-lg leading-relaxed max-w-3xl mx-auto">
-              Chicago Fire Watch runs a live cam on the construction of McDonald's Park, the Chicago Fire FC's new stadium at The 78, streaming 7am–6pm CT every day. News outlets can request stills, clips, and monthly timelapses. Send your request below and we'll reply within a few hours during stream hours.
+              Chicago Fire Watch runs a live cam on the construction of McDonald's Park, the Chicago Fire FC's new stadium at The 78, streaming 7am–6pm CT Monday through Saturday (no stream on Sundays). News outlets can request stills, clips, and monthly timelapses. Send your request below and we'll reply within a few hours during stream hours.
             </p>
           </div>
         </section>
